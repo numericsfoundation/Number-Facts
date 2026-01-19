@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Number Facts Generator</title>
+<title>Number Facts Practice Sheet Generator</title>
 
 <style>
   body{
@@ -46,7 +46,7 @@
 
   .selectLayout{
     display:grid;
-    grid-template-columns: auto 300px;
+    grid-template-columns: auto 320px;
     gap: 22px;
     align-items:start;
     justify-content:center;
@@ -140,7 +140,7 @@
     border:1px solid #cfcfcf;
     padding: 10px 10px 12px 10px;
     border-radius:8px;
-    width: 300px;
+    width: 320px;
     box-sizing:border-box;
   }
 
@@ -187,15 +187,6 @@
     font-size:13px;
   }
 
-  .designRow{
-    display:grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items:center;
-    gap:12px;
-    max-width: 1220px;
-    margin: 0 auto;
-  }
-
   .modeRow{
     display:flex;
     justify-content:center;
@@ -215,35 +206,6 @@
   }
 
   .modeBtn.active{
-    background:#111;
-    color:#fff;
-  }
-
-  .designBlock{
-    text-align:center;
-    font-size:13px;
-  }
-
-  .choiceRow{
-    margin-top:10px;
-    display:flex;
-    justify-content:center;
-    gap:8px;
-    flex-wrap:wrap;
-  }
-
-  .choice{
-    min-width:44px;
-    height:32px;
-    padding: 0 12px;
-    border:1px solid #777;
-    background:#fff;
-    cursor:pointer;
-    font-size:13px;
-    border-radius:10px;
-  }
-
-  .choice.active{
     background:#111;
     color:#fff;
   }
@@ -271,6 +233,67 @@
     color:#fff;
   }
 
+  .designGrid{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    align-items:start;
+    justify-items:center;
+  }
+
+  .designCard{
+    width: 100%;
+    max-width: 360px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    padding:12px;
+    box-sizing:border-box;
+    text-align:center;
+  }
+
+  .designCardTitle{
+    font-weight:700;
+    margin-bottom:10px;
+  }
+
+  .choiceRow{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+
+  .choice{
+    min-width:44px;
+    height:32px;
+    padding: 0 12px;
+    border:1px solid #777;
+    background:#fff;
+    cursor:pointer;
+    font-size:13px;
+    border-radius:10px;
+  }
+
+  .choice.active{
+    background:#111;
+    color:#fff;
+  }
+
+  select{
+    width: 100%;
+    max-width: 320px;
+    padding: 8px 10px;
+    border-radius:10px;
+    border:1px solid #777;
+    font-size:13px;
+    background:#fff;
+  }
+
+  .generateWrap{
+    text-align:center;
+    margin-top: 14px;
+  }
+
   .generateBtn{
     background:#c00;
     color:#fff;
@@ -281,13 +304,14 @@
     border-radius:10px;
   }
 
-  .printNote{
+  .hint{
     font-size:12px;
-    margin-top:8px;
+    margin-top:10px;
     text-align:center;
-    max-width: 820px;
+    max-width: 900px;
     margin-left:auto;
     margin-right:auto;
+    line-height:1.45;
   }
 
   @media (max-width: 1100px){
@@ -298,11 +322,9 @@
     .levelsBox{
       width: min(520px, 100%);
     }
-  }
-
-  @media print{
-    .noPrint{ display:none; }
-    .page{ padding:0; }
+    .designGrid{
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 </head>
@@ -312,90 +334,55 @@
 
 <h1>Number Facts Practice Sheet Generator</h1>
 <div class="subtitle">
-Select addition or subtraction facts to focus on, then design and generate printable practice sheets or flashcards.
+Select addition or subtraction facts, then generate printable practice sheets or flashcards.
 </div>
 
 <div class="section">
-  <div class="sectionTitle">Select number facts</div>
-
   <div class="selectLayout">
     <div class="twoGrids">
       <div class="gridPanel">
-        <div class="panelTitle">Addition facts</div>
+        <div class="panelTitle">Addition Facts</div>
         <div class="gridWrap">
           <table id="addTable"></table>
         </div>
       </div>
 
       <div class="gridPanel">
-        <div class="panelTitle">Subtraction facts</div>
+        <div class="panelTitle">Subtraction Facts</div>
         <div class="gridWrap">
           <table id="subTable"></table>
         </div>
       </div>
     </div>
 
-    <div class="levelsBox noPrint">
+    <div class="levelsBox">
       <div class="levelsTitle">Levels</div>
 
       <div class="levelsSubtitle">Level 1</div>
-
-      <label class="levelRow">
-        <input type="checkbox" id="lvl11" onchange="toggleLevel('1.1', this.checked)">
-        <span>Level 1.1  No more, no less</span>
-      </label>
-
-      <label class="levelRow">
-        <input type="checkbox" id="lvl12" onchange="toggleLevel('1.2', this.checked)">
-        <span>Level 1.2</span>
-      </label>
-
-      <label class="levelRow">
-        <input type="checkbox" id="lvl13" onchange="toggleLevel('1.3', this.checked)">
-        <span>Level 1.3  All add and subtract zero</span>
-      </label>
+      <label class="levelRow"><input type="checkbox" id="lvl11" onchange="toggleLevel('1.1', this.checked)"><span>Level 1.1  No more, no less within 5</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl12" onchange="toggleLevel('1.2', this.checked)"><span>Level 1.2  No more, no less 6-10</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl13" onchange="toggleLevel('1.3', this.checked)"><span>Level 1.3  No more, no less within 10</span></label>
 
       <div class="levelsSubtitle">Level 2</div>
-
-      <label class="levelRow">
-        <input type="checkbox" id="lvl21" onchange="toggleLevel('2.1', this.checked)">
-        <span>Level 2.1  One more, one less within 5</span>
-      </label>
-
-      <label class="levelRow">
-        <input type="checkbox" id="lvl22" onchange="toggleLevel('2.2', this.checked)">
-        <span>Level 2.2  One more, one less 6 to 10</span>
-      </label>
-
-      <label class="levelRow">
-        <input type="checkbox" id="lvl23" onchange="toggleLevel('2.3', this.checked)">
-        <span>Level 2.3  One more, one less within 10</span>
-      </label>
+      <label class="levelRow"><input type="checkbox" id="lvl21" onchange="toggleLevel('2.1', this.checked)"><span>Level 2.1  One more, one less within 5</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl22" onchange="toggleLevel('2.2', this.checked)"><span>Level 2.2  One more, one less 6-10</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl23" onchange="toggleLevel('2.3', this.checked)"><span>Level 2.3  One more, one less within 10</span></label>
 
       <div class="levelsSubtitle">Level 3</div>
+      <label class="levelRow"><input type="checkbox" id="lvl31" onchange="toggleLevel('3.1', this.checked)"><span>Level 3.1  Doubles to 10</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl32" onchange="toggleLevel('3.2', this.checked)"><span>Level 3.2  Halving within 10</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl33" onchange="toggleLevel('3.3', this.checked)"><span>Level 3.3  Doubles within 20</span></label>
 
-      <label class="levelRow">
-        <input type="checkbox" id="lvl31" onchange="toggleLevel('3.1', this.checked)">
-        <span>Level 3.1  Doubles to 10</span>
-      </label>
-
-      <label class="levelRow">
-        <input type="checkbox" id="lvl32" onchange="toggleLevel('3.2', this.checked)">
-        <span>Level 3.2  Halving within 10</span>
-      </label>
-
-      <label class="levelRow">
-        <input type="checkbox" id="lvl33" onchange="toggleLevel('3.3', this.checked)">
-        <span>Level 3.3  Doubles within 20</span>
-      </label>
-
-      <div style="font-size:12px;margin-top:10px;line-height:1.4;">
-        Clicking a level selects and highlights the facts for that level.
-      </div>
+      <div class="levelsSubtitle">Level 4</div>
+      <label class="levelRow"><input type="checkbox" id="lvl41" onchange="toggleLevel('4.1', this.checked)"><span>Level 4.1  Knowing Six</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl42" onchange="toggleLevel('4.2', this.checked)"><span>Level 4.2  Knowing Seven</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl43" onchange="toggleLevel('4.3', this.checked)"><span>Level 4.3  Knowing Eight</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl44" onchange="toggleLevel('4.4', this.checked)"><span>Level 4.4  Knowing Nine</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl45" onchange="toggleLevel('4.5', this.checked)"><span>Level 4.5  Knowing Ten</span></label>
     </div>
   </div>
 
-  <div class="buttonRow noPrint">
+  <div class="buttonRow">
     <button class="btn" type="button" onclick="selectAllAddition()">Select all addition</button>
     <button class="btn" type="button" onclick="clearAddition()">Clear addition</button>
     <button class="btn" type="button" onclick="selectAllSubtraction()">Select all subtraction</button>
@@ -407,31 +394,32 @@ Select addition or subtraction facts to focus on, then design and generate print
 <div class="section">
   <div class="sectionTitle">Design</div>
 
-  <div class="modeRow noPrint">
+  <div class="modeRow">
     <button class="modeBtn active" type="button" id="modePractice" onclick="setMode('practice')">Practice sheet</button>
     <button class="modeBtn" type="button" id="modeFlash" onclick="setMode('flashcards')">Flashcards with answer backs</button>
   </div>
 
-  <div class="opRow noPrint">
+  <div class="opRow">
     <button class="opBtn active" type="button" id="opAdd" onclick="setOp('add')">Addition only</button>
     <button class="opBtn" type="button" id="opSub" onclick="setOp('sub')">Subtraction only</button>
     <button class="opBtn" type="button" id="opBoth" onclick="setOp('both')">Both</button>
   </div>
 
-  <div class="designRow noPrint" style="margin-top:14px;">
-    <div></div>
-
-    <div style="text-align:center;">
-      <button class="generateBtn" type="button" onclick="generate()">Generate</button>
-      <div class="printNote" id="hint"></div>
-      <div class="printNote">
-        For clean printing, open Print Preview, then More settings, then turn off Headers and footers.
-        For double sided flashcards, print double sided and flip on long edge.
-      </div>
+  <div class="designGrid" style="margin-top:14px;">
+    <div class="designCard">
+      <div class="designCardTitle">Practice sheet format</div>
+      <select id="qType" onchange="updateHint()">
+        <option value="total">Total</option>
+        <option value="missAdd1">Missing first addend</option>
+        <option value="missAdd2">Missing second addend</option>
+        <option value="missMinuend">Missing minuend</option>
+        <option value="missSubtrahend">Missing subtrahend</option>
+      </select>
+      <div class="hint" id="qTypeNote"></div>
     </div>
 
-    <div class="designBlock">
-      <div>Select number</div>
+    <div class="designCard">
+      <div class="designCardTitle">Number of pages</div>
       <div class="choiceRow" id="pageButtons">
         <button class="choice active" type="button" onclick="setPages(1)">1</button>
         <button class="choice" type="button" onclick="setPages(2)">2</button>
@@ -441,6 +429,19 @@ Select addition or subtraction facts to focus on, then design and generate print
         <button class="choice" type="button" onclick="setPages(10)">10</button>
       </div>
     </div>
+
+    <div class="designCard">
+      <div class="designCardTitle">Generate</div>
+      <div class="generateWrap">
+        <button class="generateBtn" type="button" onclick="generate()">Generate</button>
+      </div>
+      <div class="hint" id="hint"></div>
+    </div>
+  </div>
+
+  <div class="hint">
+    For clean printing, open Print Preview, then More settings, then turn off Headers and footers.
+    For double sided flashcards, print double sided and flip on long edge.
   </div>
 </div>
 
@@ -452,6 +453,8 @@ const MAX_N = 10;
 const addTable = document.getElementById("addTable");
 const subTable = document.getElementById("subTable");
 const hint = document.getElementById("hint");
+const qTypeEl = document.getElementById("qType");
+const qTypeNote = document.getElementById("qTypeNote");
 
 let manualAdd = new Set();
 let manualSub = new Set();
@@ -481,15 +484,6 @@ function escapeHtml(s){
 }
 
 function niceLevelLabel(id){
-  if(id === "1.1") return "Level 1.1";
-  if(id === "1.2") return "Level 1.2";
-  if(id === "1.3") return "Level 1.3";
-  if(id === "2.1") return "Level 2.1";
-  if(id === "2.2") return "Level 2.2";
-  if(id === "2.3") return "Level 2.3";
-  if(id === "3.1") return "Level 3.1";
-  if(id === "3.2") return "Level 3.2";
-  if(id === "3.3") return "Level 3.3";
   return "Level " + id;
 }
 
@@ -501,7 +495,6 @@ function selectedLevelsText(){
     if(ap[0] !== bp[0]) return ap[0] - bp[0];
     return ap[1] - bp[1];
   });
-
   if(list.length === 0) return "Levels  Manual selection";
   return "Levels  " + list.map(niceLevelLabel).join(", ");
 }
@@ -626,11 +619,19 @@ function setPages(n){
 }
 
 function updateHint(){
+  const qt = qTypeEl.value;
+
   if(mode === "practice"){
     hint.textContent = "Practice sheets include 30 questions per sheet arranged in 3 columns of 10.";
   }else{
     hint.textContent = "Flashcards include 10 cards per sheet plus a matching answer back sheet.";
   }
+
+  if(qt === "total") qTypeNote.textContent = "Answer is written on the line.";
+  if(qt === "missAdd1") qTypeNote.textContent = "Blank is the first addend. Students write the missing number in the blank.";
+  if(qt === "missAdd2") qTypeNote.textContent = "Blank is the second addend. Students write the missing number in the blank.";
+  if(qt === "missMinuend") qTypeNote.textContent = "Blank is the minuend. Students write the missing number in the blank.";
+  if(qt === "missSubtrahend") qTypeNote.textContent = "Blank is the subtrahend. Students write the missing number in the blank.";
 }
 
 function levelFacts(level){
@@ -707,9 +708,7 @@ function levelFacts(level){
   if(level === "3.1"){
     const add = [];
     const sub = [];
-    for(let a=0;a<=5;a++){
-      add.push([a,a]);
-    }
+    for(let a=0;a<=5;a++) add.push([a,a]);
     return { add, sub };
   }
 
@@ -726,9 +725,42 @@ function levelFacts(level){
   if(level === "3.3"){
     const add = [];
     const sub = [];
-    for(let a=0;a<=10;a++){
-      add.push([a,a]);
-    }
+    for(let a=0;a<=10;a++) add.push([a,a]);
+    return { add, sub };
+  }
+
+  if(level === "4.1"){
+    const add = [];
+    const sub = [];
+    for(let b=0;b<=6;b++) sub.push([6,b]);
+    return { add, sub };
+  }
+
+  if(level === "4.2"){
+    const add = [];
+    const sub = [];
+    for(let b=0;b<=7;b++) sub.push([7,b]);
+    return { add, sub };
+  }
+
+  if(level === "4.3"){
+    const add = [];
+    const sub = [];
+    for(let b=0;b<=8;b++) sub.push([8,b]);
+    return { add, sub };
+  }
+
+  if(level === "4.4"){
+    const add = [];
+    const sub = [];
+    for(let b=0;b<=9;b++) sub.push([9,b]);
+    return { add, sub };
+  }
+
+  if(level === "4.5"){
+    const add = [];
+    const sub = [];
+    for(let b=0;b<=10;b++) sub.push([10,b]);
     return { add, sub };
   }
 
@@ -756,7 +788,7 @@ function refreshSelections(){
 
   for(let a=0;a<=MAX_N;a++){
     for(let b=0;b<=MAX_N;b++){
-      const key = k(a,b);
+      const key = a + "|" + b;
 
       const addCell = addCells[key];
       if(addCell){
@@ -812,7 +844,7 @@ function clearAll(){
   manualSub.clear();
   activeLevels.clear();
 
-  ["lvl11","lvl12","lvl13","lvl21","lvl22","lvl23","lvl31","lvl32","lvl33"].forEach(id=>{
+  ["lvl11","lvl12","lvl13","lvl21","lvl22","lvl23","lvl31","lvl32","lvl33","lvl41","lvl42","lvl43","lvl44","lvl45"].forEach(id=>{
     const el = document.getElementById(id);
     if(el) el.checked = false;
   });
@@ -848,28 +880,70 @@ function pickFrom(pool){
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-function fmtFront(item){
-  if(item.op === "add") return item.a + " + " + item.b;
-  return item.a + " − " + item.b;
-}
-
 function valAnswer(item){
   if(item.op === "add") return item.a + item.b;
   return item.a - item.b;
 }
 
+function blankInline(){
+  return "____";
+}
+
+function fmtQuestion(item, qType){
+  const a = item.a;
+  const b = item.b;
+
+  if(item.op === "add"){
+    const t = a + b;
+
+    if(qType === "total") return { text: a + " + " + b, needsLine: true };
+    if(qType === "missAdd1") return { text: blankInline() + " + " + b + " = " + t, needsLine: false };
+    if(qType === "missAdd2") return { text: a + " + " + blankInline() + " = " + t, needsLine: false };
+
+    return { text: a + " + " + b, needsLine: true };
+  }
+
+  const d = a - b;
+
+  if(qType === "total") return { text: a + " − " + b, needsLine: true };
+  if(qType === "missSubtrahend") return { text: a + " − " + blankInline() + " = " + d, needsLine: false };
+  if(qType === "missMinuend") return { text: blankInline() + " − " + b + " = " + d, needsLine: false };
+
+  return { text: a + " − " + b, needsLine: true };
+}
+
+function compatiblePool(pool, qType){
+  if(qType === "missAdd1" || qType === "missAdd2"){
+    return pool.filter(x=>x.op === "add");
+  }
+  if(qType === "missMinuend" || qType === "missSubtrahend"){
+    return pool.filter(x=>x.op === "sub");
+  }
+  return pool;
+}
+
 function generate(){
-  const pool = getPool();
+  let pool = getPool();
   if(pool.length === 0){
     alert("Select at least one fact for the chosen operation.");
     return;
   }
 
-  if(mode === "practice") generateWorksheets(pool);
-  else generateFlashcards(pool);
+  if(mode === "practice"){
+    const qt = qTypeEl.value;
+    pool = compatiblePool(pool, qt);
+    if(pool.length === 0){
+      alert("That practice sheet format does not match your operation choice. Choose Addition only or Subtraction only, or change the format.");
+      return;
+    }
+    generateWorksheets(pool, qt);
+    return;
+  }
+
+  generateFlashcards(pool);
 }
 
-function generateWorksheets(pool){
+function generateWorksheets(pool, qType){
   let pagesHtml = "";
   const levelsLine = escapeHtml(selectedLevelsText());
 
@@ -880,9 +954,11 @@ function generateWorksheets(pool){
       let col = "";
       for(let r=0;r<10;r++){
         const q = pickFrom(pool);
-        col += `<div class="q">${fmtFront(q)}<span class="ans"></span></div>`;
+        const qObj = fmtQuestion(q, qType);
+        const line = qObj.needsLine ? "<span class='ans'></span>" : "";
+        col += "<div class='q'>" + escapeHtml(qObj.text) + line + "</div>";
       }
-      cols += `<div class="col">${col}</div>`;
+      cols += "<div class='col'>" + col + "</div>";
     }
 
     const title =
@@ -894,7 +970,7 @@ function generateWorksheets(pool){
       <div class="printPage">
         <div class="centerFrame">
           <div class="worksheet">
-            <div class="worksheetTitle">${title}</div>
+            <div class="worksheetTitle">${escapeHtml(title)}</div>
             <div class="worksheetLevels">${levelsLine}</div>
             <div class="nameDateRow">
               <span class="label">Name</span><span class="line"></span>
@@ -924,6 +1000,11 @@ function generateFlashcards(pool){
     return rows;
   }
 
+  function fmtFront(item){
+    if(item.op === "add") return item.a + " + " + item.b;
+    return item.a + " − " + item.b;
+  }
+
   let pagesHtml = "";
 
   for(let p=0;p<pageCount;p++){
@@ -932,16 +1013,16 @@ function generateFlashcards(pool){
 
     let fronts = "";
     for(const row of rows){
-      fronts += `<div class="card">${fmtFront(row[0])}</div>`;
-      fronts += `<div class="card">${fmtFront(row[1])}</div>`;
+      fronts += "<div class='card'>" + escapeHtml(fmtFront(row[0])) + "</div>";
+      fronts += "<div class='card'>" + escapeHtml(fmtFront(row[1])) + "</div>";
     }
 
     let backs = "";
     for(const row of rows){
       const leftAns = valAnswer(row[0]);
       const rightAns = valAnswer(row[1]);
-      backs += `<div class="card">${rightAns}</div>`;
-      backs += `<div class="card">${leftAns}</div>`;
+      backs += "<div class='card'>" + escapeHtml(String(rightAns)) + "</div>";
+      backs += "<div class='card'>" + escapeHtml(String(leftAns)) + "</div>";
     }
 
     pagesHtml += `
@@ -970,7 +1051,6 @@ function openPrintWindow(pagesHtml){
 
   const printStyles = `
     @page{ margin: 30px; }
-
     html, body{ height: 100%; }
     body{ font-family: Arial, sans-serif; margin: 0; color:#111; background:#fff; }
 
@@ -994,11 +1074,7 @@ function openPrintWindow(pagesHtml){
       font-size:14px;
     }
 
-    .printIcon{
-      width:18px;
-      height:18px;
-      display:inline-block;
-    }
+    .printIcon{ width:18px; height:18px; display:inline-block; }
 
     .printPage{
       page-break-after: always;
@@ -1027,13 +1103,13 @@ function openPrintWindow(pagesHtml){
       font-weight:700;
       font-size:18px;
       text-align:center;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
 
     .worksheetLevels{
       font-size:13px;
       text-align:center;
-      margin-bottom: 22px;
+      margin-bottom: 18px;
       width: 860px;
     }
 
@@ -1043,25 +1119,17 @@ function openPrintWindow(pagesHtml){
       align-items:flex-end;
       justify-content:center;
       font-size:14px;
-      margin-bottom: 30px;
+      margin-bottom: 32px;
     }
 
-    .nameDateRow .label{
-      margin-right: 10px;
-      white-space:nowrap;
-    }
-
+    .nameDateRow .label{ margin-right: 10px; white-space:nowrap; }
     .nameDateRow .line{
       display:inline-block;
       width: 240px;
       border-bottom: 2px solid #111;
       height: 16px;
     }
-
-    .nameDateRow .gap{
-      display:inline-block;
-      width: 40px;
-    }
+    .nameDateRow .gap{ display:inline-block; width: 40px; }
 
     .cols{
       display:grid;
@@ -1070,15 +1138,12 @@ function openPrintWindow(pagesHtml){
       justify-content:center;
     }
 
-    .col{
-      display:flex;
-      flex-direction:column;
-    }
+    .col{ display:flex; flex-direction:column; }
 
     .q{
       font-size:22px;
-      line-height:2.7;
-      padding:6px 0;
+      line-height:2.9;
+      padding:8px 0;
       white-space:nowrap;
     }
 
@@ -1150,6 +1215,6 @@ buildSubtractionTable();
 updateHint();
 refreshSelections();
 </script>
+
 </body>
 </html>
-
