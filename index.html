@@ -468,6 +468,23 @@ const activeLevels = new Set();
 const addCells = {};
 const subCells = {};
 
+const LEVEL_NAMES = {
+  "1.1":"No more, no less within 5",
+  "1.2":"No more, no less 6-10",
+  "1.3":"No more, no less within 10",
+  "2.1":"One more, one less within 5",
+  "2.2":"One more, one less 6-10",
+  "2.3":"One more, one less within 10",
+  "3.1":"Doubles to 10",
+  "3.2":"Halving within 10",
+  "3.3":"Doubles within 20",
+  "4.1":"Knowing Six",
+  "4.2":"Knowing Seven",
+  "4.3":"Knowing Eight",
+  "4.4":"Knowing Nine",
+  "4.5":"Knowing Ten"
+};
+
 function k(a,b){ return a + "|" + b; }
 function parseKey(s){
   const p = s.split("|");
@@ -483,20 +500,15 @@ function escapeHtml(s){
     .replaceAll("'","&#39;");
 }
 
-function niceLevelLabel(id){
-  return "Level " + id;
-}
-
-function selectedLevelsText(){
+function selectedLevelsLine(){
+  if(activeLevels.size === 0) return "Manual selection";
   const list = Array.from(activeLevels);
   list.sort((a,b)=>{
-    const ap = a.split(".").map(n=>parseInt(n,10));
-    const bp = b.split(".").map(n=>parseInt(n,10));
-    if(ap[0] !== bp[0]) return ap[0] - bp[0];
-    return ap[1] - bp[1];
+    const ap = a.split(".").map(Number);
+    const bp = b.split(".").map(Number);
+    return ap[0] !== bp[0] ? ap[0] - bp[0] : ap[1] - bp[1];
   });
-  if(list.length === 0) return "Levels  Manual selection";
-  return "Levels  " + list.map(niceLevelLabel).join(", ");
+  return list.map(id=>"Level " + id + " " + (LEVEL_NAMES[id] || "")).join(", ");
 }
 
 function buildAdditionTable(){
@@ -628,10 +640,10 @@ function updateHint(){
   }
 
   if(qt === "total") qTypeNote.textContent = "Answer is written on the line.";
-  if(qt === "missAdd1") qTypeNote.textContent = "Blank is the first addend. Students write the missing number in the blank.";
-  if(qt === "missAdd2") qTypeNote.textContent = "Blank is the second addend. Students write the missing number in the blank.";
-  if(qt === "missMinuend") qTypeNote.textContent = "Blank is the minuend. Students write the missing number in the blank.";
-  if(qt === "missSubtrahend") qTypeNote.textContent = "Blank is the subtrahend. Students write the missing number in the blank.";
+  if(qt === "missAdd1") qTypeNote.textContent = "Blank is the first addend.";
+  if(qt === "missAdd2") qTypeNote.textContent = "Blank is the second addend.";
+  if(qt === "missMinuend") qTypeNote.textContent = "Blank is the minuend.";
+  if(qt === "missSubtrahend") qTypeNote.textContent = "Blank is the subtrahend.";
 }
 
 function levelFacts(level){
@@ -945,7 +957,8 @@ function generate(){
 
 function generateWorksheets(pool, qType){
   let pagesHtml = "";
-  const levelsLine = escapeHtml(selectedLevelsText());
+
+  const levelsLine = escapeHtml(selectedLevelsLine());
 
   for(let p=0;p<pageCount;p++){
     let cols = "";
@@ -961,10 +974,7 @@ function generateWorksheets(pool, qType){
       cols += "<div class='col'>" + col + "</div>";
     }
 
-    const title =
-      opChoice === "add" ? "Addition Facts Practice" :
-      opChoice === "sub" ? "Subtraction Facts Practice" :
-      "Number Facts Practice";
+    const title = "Symbolic Practice";
 
     pagesHtml += `
       <div class="printPage">
