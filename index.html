@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Number Facts Practice Sheet Generator</title>
+<title>Symbolic Practice Generator</title>
 
 <style>
   body{
@@ -314,6 +314,13 @@
     line-height:1.45;
   }
 
+  .subCardTitle{
+    font-weight:700;
+    margin-top:14px;
+    margin-bottom:6px;
+    font-size:13px;
+  }
+
   @media (max-width: 1100px){
     .selectLayout{
       grid-template-columns: 1fr;
@@ -332,7 +339,7 @@
 <body>
 <div class="page">
 
-<h1>Number Facts Practice Sheet Generator</h1>
+<h1>Symbolic Practice Generator</h1>
 <div class="subtitle">
 Select addition or subtraction facts, then generate printable practice sheets or flashcards.
 </div>
@@ -428,6 +435,14 @@ Select addition or subtraction facts, then generate printable practice sheets or
         <button class="choice" type="button" onclick="setPages(5)">5</button>
         <button class="choice" type="button" onclick="setPages(10)">10</button>
       </div>
+
+      <div class="subCardTitle">Questions per page</div>
+      <div class="choiceRow" id="qppButtons">
+        <button class="choice" type="button" onclick="setQuestionsPerPage(12)">12</button>
+        <button class="choice" type="button" onclick="setQuestionsPerPage(18)">18</button>
+        <button class="choice" type="button" onclick="setQuestionsPerPage(24)">24</button>
+        <button class="choice active" type="button" onclick="setQuestionsPerPage(30)">30</button>
+      </div>
     </div>
 
     <div class="designCard">
@@ -462,6 +477,7 @@ let manualSub = new Set();
 let pageCount = 1;
 let mode = "practice";
 let opChoice = "add";
+let questionsPerPage = 30;
 
 const activeLevels = new Set();
 
@@ -630,11 +646,24 @@ function setPages(n){
   });
 }
 
+function setQuestionsPerPage(n){
+  if(n !== 12 && n !== 18 && n !== 24 && n !== 30) n = 30;
+  questionsPerPage = n;
+
+  document.querySelectorAll("#qppButtons .choice").forEach(b=>b.classList.remove("active"));
+  Array.from(document.querySelectorAll("#qppButtons .choice")).forEach(btn=>{
+    if(parseInt(btn.textContent,10) === n) btn.classList.add("active");
+  });
+
+  updateHint();
+}
+
 function updateHint(){
   const qt = qTypeEl.value;
 
   if(mode === "practice"){
-    hint.textContent = "Practice sheets include 30 questions per sheet arranged in 3 columns of 10.";
+    const rowsPerCol = Math.floor(questionsPerPage / 3);
+    hint.textContent = "Practice sheets include " + questionsPerPage + " questions per sheet arranged in 3 columns of " + rowsPerCol + ".";
   }else{
     hint.textContent = "Flashcards include 10 cards per sheet plus a matching answer back sheet.";
   }
@@ -959,13 +988,14 @@ function generateWorksheets(pool, qType){
   let pagesHtml = "";
 
   const levelsLine = escapeHtml(selectedLevelsLine());
+  const rowsPerCol = Math.floor(questionsPerPage / 3);
 
   for(let p=0;p<pageCount;p++){
     let cols = "";
 
     for(let c=0;c<3;c++){
       let col = "";
-      for(let r=0;r<10;r++){
+      for(let r=0;r<rowsPerCol;r++){
         const q = pickFrom(pool);
         const qObj = fmtQuestion(q, qType);
         const line = qObj.needsLine ? "<span class='ans'></span>" : "";
@@ -974,7 +1004,7 @@ function generateWorksheets(pool, qType){
       cols += "<div class='col'>" + col + "</div>";
     }
 
-    const title = "Symbolic Practice";
+    const title = "Symbolic Practice Generator";
 
     pagesHtml += `
       <div class="printPage">
