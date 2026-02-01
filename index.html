@@ -159,7 +159,7 @@
 
   .levelRow{
     display:flex;
-    align-items:center;
+    align-items:flex-start;
     gap:10px;
     margin: 8px 0;
     font-size:13px;
@@ -168,6 +168,7 @@
   .levelRow input{
     width: 16px;
     height: 16px;
+    margin-top: 2px;
   }
 
   .buttonRow{
@@ -345,60 +346,6 @@ Select addition or subtraction facts, then generate printable practice sheets or
 </div>
 
 <div class="section">
-  <div class="selectLayout">
-    <div class="twoGrids">
-      <div class="gridPanel">
-        <div class="panelTitle">Addition Facts</div>
-        <div class="gridWrap">
-          <table id="addTable"></table>
-        </div>
-      </div>
-
-      <div class="gridPanel">
-        <div class="panelTitle">Subtraction Facts</div>
-        <div class="gridWrap">
-          <table id="subTable"></table>
-        </div>
-      </div>
-    </div>
-
-    <div class="levelsBox">
-      <div class="levelsTitle">Levels</div>
-
-      <div class="levelsSubtitle">Level 1</div>
-      <label class="levelRow"><input type="checkbox" id="lvl11" onchange="toggleLevel('1.1', this.checked)"><span>Level 1.1  No more, no less within 5</span></label>
-      <label class="levelRow"><input type="checkbox" id="lvl12" onchange="toggleLevel('1.2', this.checked)"><span>Level 1.2  No more, no less 6-10</span></label>
-      <label class="levelRow"><input type="checkbox" id="lvl13" onchange="toggleLevel('1.3', this.checked)"><span>Level 1.3  No more, no less within 10</span></label>
-
-      <div class="levelsSubtitle">Level 2</div>
-      <label class="levelRow"><input type="checkbox" id="lvl21" onchange="toggleLevel('2.1', this.checked)"><span>Level 2.1  One more, one less within 5</span></label>
-      <label class="levelRow"><input type="checkbox" id="lvl22" onchange="toggleLevel('2.2', this.checked)"><span>Level 2.2  One more, one less 6-10</span></label>
-      <label class="levelRow"><input type="checkbox" id="lvl23" onchange="toggleLevel('2.3', this.checked)"><span>Level 2.3  One more, one less within 10</span></label>
-
-      <div class="levelsSubtitle">Level 3</div>
-      <label class="levelRow"><input type="checkbox" id="lvl31" onchange="toggleLevel('3.1', this.checked)"><span>Level 3.1  Doubles to 10</span></label>
-      <label class="levelRow"><input type="checkbox" id="lvl32" onchange="toggleLevel('3.2', this.checked)"><span>Level 3.2  Halving within 10</span></label>
-      <label class="levelRow"><input type="checkbox" id="lvl33" onchange="toggleLevel('3.3', this.checked)"><span>Level 3.3  Doubles within 20</span></label>
-
-      <div class="levelsSubtitle">Level 4</div>
-      <label class="levelRow"><input type="checkbox" id="lvl41" onchange="toggleLevel('4.1', this.checked)"><span>Level 4.1  Knowing Six</span></label>
-      <label class="levelRow"><input type="checkbox" id="lvl42" onchange="toggleLevel('4.2', this.checked)"><span>Level 4.2  Knowing Seven</span></label>
-      <label class="levelRow"><input type="checkbox" id="lvl43" onchange="toggleLevel('4.3', this.checked)"><span>Level 4.3  Knowing Eight</span></label>
-      <label class="levelRow"><input type="checkbox" id="lvl44" onchange="toggleLevel('4.4', this.checked)"><span>Level 4.4  Knowing Nine</span></label>
-      <label class="levelRow"><input type="checkbox" id="lvl45" onchange="toggleLevel('4.5', this.checked)"><span>Level 4.5  Knowing Ten</span></label>
-    </div>
-  </div>
-
-  <div class="buttonRow">
-    <button class="btn" type="button" onclick="selectAllAddition()">Select all addition</button>
-    <button class="btn" type="button" onclick="clearAddition()">Clear addition</button>
-    <button class="btn" type="button" onclick="selectAllSubtraction()">Select all subtraction</button>
-    <button class="btn" type="button" onclick="clearSubtraction()">Clear subtraction</button>
-    <button class="btn" type="button" onclick="clearAll()">Clear all</button>
-  </div>
-</div>
-
-<div class="section">
   <div class="sectionTitle">Design</div>
 
   <div class="modeRow">
@@ -460,10 +407,115 @@ Select addition or subtraction facts, then generate printable practice sheets or
   </div>
 </div>
 
+<div class="section">
+  <div class="selectLayout">
+    <div class="twoGrids">
+      <div class="gridPanel">
+
+ <div class="buttonRow">
+    <button class="btn" type="button" onclick="selectAllAddition()">Select all addition</button>
+    <button class="btn" type="button" onclick="clearAddition()">Clear addition</button>
+    <button class="btn" type="button" onclick="selectAllSubtraction()">Select all subtraction</button>
+    <button class="btn" type="button" onclick="clearSubtraction()">Clear subtraction</button>
+    <button class="btn" type="button" onclick="clearAll()">Clear all</button>
+  </div>
+
+<div style="height:24px;"></div>
+
+        <div class="panelTitle">Addition Facts</div>
+        <div class="gridWrap">
+          <table id="addTable"></table>
+        </div>
+      </div>
+
+      <div class="gridPanel">
+        <div class="panelTitle">Subtraction Facts</div>
+        <div class="gridWrap">
+          <table id="subTable"></table>
+        </div>
+      </div>
+    </div>
+
+    <div class="levelsBox">
+      <div class="levelsTitle">Levels</div>
+
+      <div class="levelsSubtitle">Level 1</div>
+      <label class="levelRow"><input type="checkbox" id="lvl11" onchange="toggleLevel('1.1', this.checked)"><span>Level 1.1  No more, no less within 5</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl12" onchange="toggleLevel('1.2', this.checked)"><span>Level 1.2  No more, no less 6 to 10</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl13" onchange="toggleLevel('1.3', this.checked)"><span>Level 1.3  No more, no less within 10</span></label>
+
+      <div class="levelsSubtitle">Level 2</div>
+      <label class="levelRow"><input type="checkbox" id="lvl21a" onchange="toggleLevel('2.1a', this.checked)"><span>Level 2.1a  One more, one less within 5, 1 as second addend</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl21b" onchange="toggleLevel('2.1b', this.checked)"><span>Level 2.1b  One more, one less within 5, 1 as first addend</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl21c" onchange="toggleLevel('2.1c', this.checked)"><span>Level 2.1c  One more, one less within 5, 1 as first and second addend</span></label>
+
+      <label class="levelRow"><input type="checkbox" id="lvl22a" onchange="toggleLevel('2.2a', this.checked)"><span>Level 2.2a  One more, one less 6 to 10, 1 as second addend</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl22b" onchange="toggleLevel('2.2b', this.checked)"><span>Level 2.2b  One more, one less 6 to 10, 1 as first addend</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl22c" onchange="toggleLevel('2.2c', this.checked)"><span>Level 2.2c  One more, one less 6 to 10, 1 as first and second addend</span></label>
+
+      <label class="levelRow"><input type="checkbox" id="lvl23a" onchange="toggleLevel('2.3a', this.checked)"><span>Level 2.3a  One more, one less within 10, 1 as second addend</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl23b" onchange="toggleLevel('2.3b', this.checked)"><span>Level 2.3b  One more, one less within 10, 1 as first addend</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl23c" onchange="toggleLevel('2.3c', this.checked)"><span>Level 2.3c  One more, one less within 10, 1 as first and second addend</span></label>
+
+      <div class="levelsSubtitle">Level 3</div>
+      <label class="levelRow"><input type="checkbox" id="lvl31a" onchange="toggleLevel('3.1a', this.checked)"><span>Level 3.1a  Two more, two less within 5, 2 as second addend</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl31b" onchange="toggleLevel('3.1b', this.checked)"><span>Level 3.1b  Two more, two less within 5, 2 as first addend</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl31c" onchange="toggleLevel('3.1c', this.checked)"><span>Level 3.1c  Two more, two less within 5, 2 as first and second addend</span></label>
+
+      <label class="levelRow"><input type="checkbox" id="lvl32a" onchange="toggleLevel('3.2a', this.checked)"><span>Level 3.2a  Two more, two less 6 to 10, 2 as second addend</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl32b" onchange="toggleLevel('3.2b', this.checked)"><span>Level 3.2b  Two more, two less 6 to 10, 2 as first addend</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl32c" onchange="toggleLevel('3.2c', this.checked)"><span>Level 3.2c  Two more, two less 6 to 10, 2 as first and second addend</span></label>
+
+      <label class="levelRow"><input type="checkbox" id="lvl33a" onchange="toggleLevel('3.3a', this.checked)"><span>Level 3.3a  Two more, two less within 10, 2 as second addend</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl33b" onchange="toggleLevel('3.3b', this.checked)"><span>Level 3.3b  Two more, two less within 10, 2 as first addend</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl33c" onchange="toggleLevel('3.3c', this.checked)"><span>Level 3.3c  Two more, two less within 10, 2 as first and second addend</span></label>
+
+      <div class="levelsSubtitle">Level 4</div>
+      <label class="levelRow"><input type="checkbox" id="lvl41" onchange="toggleLevel('4.1', this.checked)"><span>Level 4.1  Doubles to 10</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl42" onchange="toggleLevel('4.2', this.checked)"><span>Level 4.2  Doubles within 20</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl43" onchange="toggleLevel('4.3', this.checked)"><span>Level 4.3  Halving within 10</span></label>
+
+      <div class="levelsSubtitle">Level 5</div>
+      <label class="levelRow"><input type="checkbox" id="lvl51" onchange="toggleLevel('5.1', this.checked)"><span>Level 5.1  Making Six</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl52" onchange="toggleLevel('5.2', this.checked)"><span>Level 5.2  Making Seven</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl53" onchange="toggleLevel('5.3', this.checked)"><span>Level 5.3  Making Eight</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl54" onchange="toggleLevel('5.4', this.checked)"><span>Level 5.4  Making Nine</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl55" onchange="toggleLevel('5.5', this.checked)"><span>Level 5.5  Making Ten</span></label>
+
+      <div class="levelsSubtitle">Level 6</div>
+      <label class="levelRow"><input type="checkbox" id="lvl61" onchange="toggleLevel('6.1', this.checked)"><span>Level 6.1  Knowing Six</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl62" onchange="toggleLevel('6.2', this.checked)"><span>Level 6.2  Knowing Seven</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl63" onchange="toggleLevel('6.3', this.checked)"><span>Level 6.3  Knowing Eight</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl64" onchange="toggleLevel('6.4', this.checked)"><span>Level 6.4  Knowing Nine</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl65" onchange="toggleLevel('6.5', this.checked)"><span>Level 6.5  Knowing Ten</span></label>
+
+      <div class="levelsSubtitle">Level 7</div>
+      <label class="levelRow"><input type="checkbox" id="lvl71" onchange="toggleLevel('7.1', this.checked)"><span>Level 7.1  Doubles 12 to 20</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl72" onchange="toggleLevel('7.2', this.checked)"><span>Level 7.2  Doubles within 20</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl73" onchange="toggleLevel('7.3', this.checked)"><span>Level 7.3  Halves 12 to 20</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl74" onchange="toggleLevel('7.4', this.checked)"><span>Level 7.4  Halves within 20</span></label>
+
+      <div class="levelsSubtitle">Level 8</div>
+      <label class="levelRow"><input type="checkbox" id="lvl81" onchange="toggleLevel('8.1', this.checked)"><span>Level 8.1  Ten and more</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl82" onchange="toggleLevel('8.2', this.checked)"><span>Level 8.2  Nine and more</span></label>
+      <label class="levelRow"><input type="checkbox" id="lvl83" onchange="toggleLevel('8.3', this.checked)"><span>Level 8.3  Eight and more</span></label>
+    </div>
+  </div>
+
+  <div class="buttonRow">
+    <button class="btn" type="button" onclick="selectAllAddition()">Select all addition</button>
+    <button class="btn" type="button" onclick="clearAddition()">Clear addition</button>
+    <button class="btn" type="button" onclick="selectAllSubtraction()">Select all subtraction</button>
+    <button class="btn" type="button" onclick="clearSubtraction()">Clear subtraction</button>
+    <button class="btn" type="button" onclick="clearAll()">Clear all</button>
+  </div>
+</div>
+
 </div>
 
 <script>
 const MAX_N = 10;
+const SUB_ROW_MAX = 20;
 
 const addTable = document.getElementById("addTable");
 const subTable = document.getElementById("subTable");
@@ -486,19 +538,53 @@ const subCells = {};
 
 const LEVEL_NAMES = {
   "1.1":"No more, no less within 5",
-  "1.2":"No more, no less 6-10",
+  "1.2":"No more, no less 6 to 10",
   "1.3":"No more, no less within 10",
-  "2.1":"One more, one less within 5",
-  "2.2":"One more, one less 6-10",
-  "2.3":"One more, one less within 10",
-  "3.1":"Doubles to 10",
-  "3.2":"Halving within 10",
-  "3.3":"Doubles within 20",
-  "4.1":"Knowing Six",
-  "4.2":"Knowing Seven",
-  "4.3":"Knowing Eight",
-  "4.4":"Knowing Nine",
-  "4.5":"Knowing Ten"
+
+  "2.1a":"One more, one less within 5, 1 as second addend",
+  "2.1b":"One more, one less within 5, 1 as first addend",
+  "2.1c":"One more, one less within 5, 1 as first and second addend",
+  "2.2a":"One more, one less 6 to 10, 1 as second addend",
+  "2.2b":"One more, one less 6 to 10, 1 as first addend",
+  "2.2c":"One more, one less 6 to 10, 1 as first and second addend",
+  "2.3a":"One more, one less within 10, 1 as second addend",
+  "2.3b":"One more, one less within 10, 1 as first addend",
+  "2.3c":"One more, one less within 10, 1 as first and second addend",
+
+  "3.1a":"Two more, two less within 5, 2 as second addend",
+  "3.1b":"Two more, two less within 5, 2 as first addend",
+  "3.1c":"Two more, two less within 5, 2 as first and second addend",
+  "3.2a":"Two more, two less 6 to 10, 2 as second addend",
+  "3.2b":"Two more, two less 6 to 10, 2 as first addend",
+  "3.2c":"Two more, two less 6 to 10, 2 as first and second addend",
+  "3.3a":"Two more, two less within 10, 2 as second addend",
+  "3.3b":"Two more, two less within 10, 2 as first addend",
+  "3.3c":"Two more, two less within 10, 2 as first and second addend",
+
+  "4.1":"Doubles to 10",
+  "4.2":"Doubles within 20",
+  "4.3":"Halving within 10",
+
+  "5.1":"Making Six",
+  "5.2":"Making Seven",
+  "5.3":"Making Eight",
+  "5.4":"Making Nine",
+  "5.5":"Making Ten",
+
+  "6.1":"Knowing Six",
+  "6.2":"Knowing Seven",
+  "6.3":"Knowing Eight",
+  "6.4":"Knowing Nine",
+  "6.5":"Knowing Ten",
+
+  "7.1":"Doubles 12 to 20",
+  "7.2":"Doubles within 20",
+  "7.3":"Halves 12 to 20",
+  "7.4":"Halves within 20",
+
+  "8.1":"Ten and more",
+  "8.2":"Nine and more",
+  "8.3":"Eight and more"
 };
 
 function k(a,b){ return a + "|" + b; }
@@ -519,12 +605,44 @@ function escapeHtml(s){
 function selectedLevelsLine(){
   if(activeLevels.size === 0) return "Manual selection";
   const list = Array.from(activeLevels);
+
   list.sort((a,b)=>{
-    const ap = a.split(".").map(Number);
-    const bp = b.split(".").map(Number);
-    return ap[0] !== bp[0] ? ap[0] - bp[0] : ap[1] - bp[1];
+    const ap = a.split(".");
+    const bp = b.split(".");
+    const aMajor = parseInt(ap[0],10);
+    const bMajor = parseInt(bp[0],10);
+
+    if(aMajor !== bMajor) return aMajor - bMajor;
+
+    const aMinorRaw = ap[1] || "0";
+    const bMinorRaw = bp[1] || "0";
+
+    const aMinor = parseInt(aMinorRaw,10);
+    const bMinor = parseInt(bMinorRaw,10);
+
+    if(aMinor !== bMinor) return aMinor - bMinor;
+
+    const aSuf = (ap[2] || "");
+    const bSuf = (bp[2] || "");
+
+    return aSuf.localeCompare(bSuf);
   });
+
   return list.map(id=>"Level " + id + " " + (LEVEL_NAMES[id] || "")).join(", ");
+}
+
+function anyMakingLevelSelected(){
+  for(const l of activeLevels){
+    if(l.startsWith("5.")) return true;
+  }
+  return false;
+}
+
+function anyMoreThanTenSelected(){
+  for(const l of activeLevels){
+    if(l.startsWith("8.")) return true;
+  }
+  return false;
 }
 
 function buildAdditionTable(){
@@ -587,7 +705,7 @@ function buildSubtractionTable(){
   }
   subTable.appendChild(hr);
 
-  for(let r=0;r<=MAX_N;r++){
+  for(let r=0;r<=SUB_ROW_MAX;r++){
     const tr = document.createElement("tr");
 
     const rh = document.createElement("th");
@@ -675,6 +793,91 @@ function updateHint(){
   if(qt === "missSubtrahend") qTypeNote.textContent = "Blank is the subtrahend.";
 }
 
+function addPairsForTotal(total){
+  const add = [];
+  for(let a=0;a<=MAX_N;a++){
+    const b = total - a;
+    if(b < 0 || b > MAX_N) continue;
+    add.push([a,b]);
+  }
+  return add;
+}
+
+function doublesToTen(){
+  const add = [];
+  for(let a=0;a<=5;a++) add.push([a,a]);
+  return add;
+}
+
+function doublesWithin20(){
+  const add = [];
+  for(let a=0;a<=10;a++) add.push([a,a]);
+  return add;
+}
+
+function halvesWithin20(){
+  const sub = [];
+  sub.push([0,0]);
+  for(let a=2;a<=20;a+=2){
+    sub.push([a, a/2]);
+  }
+  return sub;
+}
+
+function doubles12to20(){
+  const add = [];
+  for(let a=6;a<=10;a++) add.push([a,a]);
+  return add;
+}
+
+function halves12to20(){
+  const sub = [];
+  for(let a=12;a<=20;a+=2){
+    sub.push([a, a/2]);
+  }
+  return sub;
+}
+
+function beyondTenFixedLeft(fixed){
+  const add = [];
+  const minMore = Math.max(1, 11 - fixed);
+  for(let more=minMore; more<=MAX_N; more++){
+    const sum = fixed + more;
+    if(sum <= 10) continue;
+    add.push([fixed, more]);
+    add.push([more, fixed]);
+  }
+  return add;
+}
+
+function fixedAddendFactsWithRange(rangeMin, rangeMax, fixed, modeId){
+  const add = [];
+  const sub = [];
+
+  const min = Math.max(0, rangeMin);
+  const max = Math.min(MAX_N, rangeMax);
+
+  const addSecond = () => {
+    for(let x=min;x<=max;x++){
+      add.push([x, fixed]);
+      if(x >= fixed) sub.push([x, fixed]);
+    }
+  };
+
+  const addFirst = () => {
+    for(let x=min;x<=max;x++){
+      add.push([fixed, x]);
+      if(fixed >= x) sub.push([fixed, x]);
+    }
+  };
+
+  if(modeId === "second") addSecond();
+  if(modeId === "first") addFirst();
+  if(modeId === "both"){ addSecond(); addFirst(); }
+
+  return { add, sub };
+}
+
 function levelFacts(level){
   if(level === "1.1"){
     const add = [];
@@ -709,101 +912,59 @@ function levelFacts(level){
     return { add, sub };
   }
 
-  if(level === "2.1"){
-    const add = [];
-    const sub = [];
-    for(let a=0;a<=5;a++){
-      add.push([a,2]);
-      add.push([2,a]);
-    }
-    for(let a=2;a<=5;a++){
-      sub.push([a,2]);
-    }
-    return { add, sub };
-  }
+  if(level === "2.1a") return fixedAddendFactsWithRange(0,5,1,"second");
+  if(level === "2.1b") return fixedAddendFactsWithRange(0,5,1,"first");
+  if(level === "2.1c") return fixedAddendFactsWithRange(0,5,1,"both");
 
-  if(level === "2.2"){
-    const add = [];
-    const sub = [];
-    for(let a=6;a<=10;a++){
-      add.push([a,2]);
-      add.push([2,a]);
-      sub.push([a,2]);
-    }
-    return { add, sub };
-  }
+  if(level === "2.2a") return fixedAddendFactsWithRange(6,10,1,"second");
+  if(level === "2.2b") return fixedAddendFactsWithRange(6,10,1,"first");
+  if(level === "2.2c") return fixedAddendFactsWithRange(6,10,1,"both");
 
-  if(level === "2.3"){
-    const add = [];
-    const sub = [];
-    for(let a=0;a<=10;a++){
-      add.push([a,2]);
-      add.push([2,a]);
-    }
-    for(let a=2;a<=10;a++){
-      sub.push([a,2]);
-    }
-    return { add, sub };
-  }
+  if(level === "2.3a") return fixedAddendFactsWithRange(0,10,1,"second");
+  if(level === "2.3b") return fixedAddendFactsWithRange(0,10,1,"first");
+  if(level === "2.3c") return fixedAddendFactsWithRange(0,10,1,"both");
 
-  if(level === "3.1"){
-    const add = [];
-    const sub = [];
-    for(let a=0;a<=5;a++) add.push([a,a]);
-    return { add, sub };
-  }
+  if(level === "3.1a") return fixedAddendFactsWithRange(0,5,2,"second");
+  if(level === "3.1b") return fixedAddendFactsWithRange(0,5,2,"first");
+  if(level === "3.1c") return fixedAddendFactsWithRange(0,5,2,"both");
 
-  if(level === "3.2"){
-    const add = [];
+  if(level === "3.2a") return fixedAddendFactsWithRange(6,10,2,"second");
+  if(level === "3.2b") return fixedAddendFactsWithRange(6,10,2,"first");
+  if(level === "3.2c") return fixedAddendFactsWithRange(6,10,2,"both");
+
+  if(level === "3.3a") return fixedAddendFactsWithRange(0,10,2,"second");
+  if(level === "3.3b") return fixedAddendFactsWithRange(0,10,2,"first");
+  if(level === "3.3c") return fixedAddendFactsWithRange(0,10,2,"both");
+
+  if(level === "4.1") return { add: doublesToTen(), sub:[] };
+  if(level === "4.2") return { add: doublesWithin20(), sub:[] };
+  if(level === "4.3"){
     const sub = [];
     sub.push([0,0]);
-    for(let a=2;a<=10;a+=2){
-      sub.push([a, a/2]);
-    }
-    return { add, sub };
+    for(let a=2;a<=10;a+=2) sub.push([a, a/2]);
+    return { add:[], sub };
   }
 
-  if(level === "3.3"){
-    const add = [];
-    const sub = [];
-    for(let a=0;a<=10;a++) add.push([a,a]);
-    return { add, sub };
-  }
+  if(level === "5.1") return { add: addPairsForTotal(6), sub:[] };
+  if(level === "5.2") return { add: addPairsForTotal(7), sub:[] };
+  if(level === "5.3") return { add: addPairsForTotal(8), sub:[] };
+  if(level === "5.4") return { add: addPairsForTotal(9), sub:[] };
+  if(level === "5.5") return { add: addPairsForTotal(10), sub:[] };
 
-  if(level === "4.1"){
-    const add = [];
-    const sub = [];
-    for(let b=0;b<=6;b++) sub.push([6,b]);
-    return { add, sub };
-  }
+  if(level === "6.1"){ const sub=[]; for(let b=0;b<=6;b++) sub.push([6,b]); return { add:[], sub }; }
+  if(level === "6.2"){ const sub=[]; for(let b=0;b<=7;b++) sub.push([7,b]); return { add:[], sub }; }
+  if(level === "6.3"){ const sub=[]; for(let b=0;b<=8;b++) sub.push([8,b]); return { add:[], sub }; }
+  if(level === "6.4"){ const sub=[]; for(let b=0;b<=9;b++) sub.push([9,b]); return { add:[], sub }; }
+  if(level === "6.5"){ const sub=[]; for(let b=0;b<=10;b++) sub.push([10,b]); return { add:[], sub }; }
 
-  if(level === "4.2"){
-    const add = [];
-    const sub = [];
-    for(let b=0;b<=7;b++) sub.push([7,b]);
-    return { add, sub };
-  }
+  if(level === "7.1") return { add: doubles12to20(), sub:[] };
+  if(level === "7.2") return { add: doublesWithin20(), sub:[] };
+  if(level === "7.3") return { add:[], sub: halves12to20() };
+  if(level === "7.4") return { add:[], sub: halvesWithin20() };
 
-  if(level === "4.3"){
-    const add = [];
-    const sub = [];
-    for(let b=0;b<=8;b++) sub.push([8,b]);
-    return { add, sub };
-  }
-
-  if(level === "4.4"){
-    const add = [];
-    const sub = [];
-    for(let b=0;b<=9;b++) sub.push([9,b]);
-    return { add, sub };
-  }
-
-  if(level === "4.5"){
-    const add = [];
-    const sub = [];
-    for(let b=0;b<=10;b++) sub.push([10,b]);
-    return { add, sub };
-  }
+  if(level === "8.1") return { add: beyondTenFixedLeft(10), sub:[] };
+  if(level === "8.2") return { add: beyondTenFixedLeft(9), sub:[] };
+  if(level === "8.3") return { add: beyondTenFixedLeft(8), sub:[] };
 
   return { add:[], sub:[] };
 }
@@ -823,20 +984,23 @@ function getLevelSets(){
 
 function refreshSelections(){
   const { levelAdd, levelSub } = getLevelSets();
-
   const unionAdd = new Set([...manualAdd, ...levelAdd]);
   const unionSub = new Set([...manualSub, ...levelSub]);
 
   for(let a=0;a<=MAX_N;a++){
     for(let b=0;b<=MAX_N;b++){
       const key = a + "|" + b;
-
       const addCell = addCells[key];
       if(addCell){
         addCell.classList.toggle("selected", unionAdd.has(key));
         addCell.classList.toggle("levelSelected", levelAdd.has(key));
       }
+    }
+  }
 
+  for(let a=0;a<=SUB_ROW_MAX;a++){
+    for(let b=0;b<=MAX_N;b++){
+      const key = a + "|" + b;
       const subCell = subCells[key];
       if(subCell){
         subCell.classList.toggle("selected", unionSub.has(key));
@@ -849,14 +1013,25 @@ function refreshSelections(){
 function toggleLevel(level, on){
   if(on) activeLevels.add(level);
   else activeLevels.delete(level);
+
+  if(anyMakingLevelSelected()){
+    setOp("add");
+    if(mode === "practice"){
+      qTypeEl.value = "missAdd2";
+      updateHint();
+    }
+  }
+
+  if(anyMoreThanTenSelected()){
+    setOp("add");
+  }
+
   refreshSelections();
 }
 
 function selectAllAddition(){
   for(let a=0;a<=MAX_N;a++){
-    for(let b=0;b<=MAX_N;b++){
-      manualAdd.add(k(a,b));
-    }
+    for(let b=0;b<=MAX_N;b++) manualAdd.add(k(a,b));
   }
   refreshSelections();
 }
@@ -867,10 +1042,8 @@ function clearAddition(){
 }
 
 function selectAllSubtraction(){
-  for(let a=0;a<=MAX_N;a++){
-    for(let b=0;b<=a;b++){
-      manualSub.add(k(a,b));
-    }
+  for(let a=0;a<=SUB_ROW_MAX;a++){
+    for(let b=0;b<=Math.min(a, MAX_N);b++) manualSub.add(k(a,b));
   }
   refreshSelections();
 }
@@ -885,7 +1058,23 @@ function clearAll(){
   manualSub.clear();
   activeLevels.clear();
 
-  ["lvl11","lvl12","lvl13","lvl21","lvl22","lvl23","lvl31","lvl32","lvl33","lvl41","lvl42","lvl43","lvl44","lvl45"].forEach(id=>{
+  [
+    "lvl11","lvl12","lvl13",
+
+    "lvl21a","lvl21b","lvl21c",
+    "lvl22a","lvl22b","lvl22c",
+    "lvl23a","lvl23b","lvl23c",
+
+    "lvl31a","lvl31b","lvl31c",
+    "lvl32a","lvl32b","lvl32c",
+    "lvl33a","lvl33b","lvl33c",
+
+    "lvl41","lvl42","lvl43",
+    "lvl51","lvl52","lvl53","lvl54","lvl55",
+    "lvl61","lvl62","lvl63","lvl64","lvl65",
+    "lvl71","lvl72","lvl73","lvl74",
+    "lvl81","lvl82","lvl83"
+  ].forEach(id=>{
     const el = document.getElementById(id);
     if(el) el.checked = false;
   });
@@ -922,8 +1111,7 @@ function pickFrom(pool){
 }
 
 function valAnswer(item){
-  if(item.op === "add") return item.a + item.b;
-  return item.a - item.b;
+  return item.op === "add" ? item.a + item.b : item.a - item.b;
 }
 
 function blankInline(){
@@ -936,34 +1124,38 @@ function fmtQuestion(item, qType){
 
   if(item.op === "add"){
     const t = a + b;
-
     if(qType === "total") return { text: a + " + " + b, needsLine: true };
     if(qType === "missAdd1") return { text: blankInline() + " + " + b + " = " + t, needsLine: false };
     if(qType === "missAdd2") return { text: a + " + " + blankInline() + " = " + t, needsLine: false };
-
     return { text: a + " + " + b, needsLine: true };
   }
 
   const d = a - b;
-
   if(qType === "total") return { text: a + " − " + b, needsLine: true };
   if(qType === "missSubtrahend") return { text: a + " − " + blankInline() + " = " + d, needsLine: false };
   if(qType === "missMinuend") return { text: blankInline() + " − " + b + " = " + d, needsLine: false };
-
   return { text: a + " − " + b, needsLine: true };
 }
 
 function compatiblePool(pool, qType){
-  if(qType === "missAdd1" || qType === "missAdd2"){
-    return pool.filter(x=>x.op === "add");
-  }
-  if(qType === "missMinuend" || qType === "missSubtrahend"){
-    return pool.filter(x=>x.op === "sub");
-  }
+  if(qType === "missAdd1" || qType === "missAdd2") return pool.filter(x=>x.op === "add");
+  if(qType === "missMinuend" || qType === "missSubtrahend") return pool.filter(x=>x.op === "sub");
   return pool;
 }
 
 function generate(){
+  if(anyMakingLevelSelected()){
+    setOp("add");
+    if(mode === "practice"){
+      qTypeEl.value = "missAdd2";
+      updateHint();
+    }
+  }
+
+  if(anyMoreThanTenSelected()){
+    setOp("add");
+  }
+
   let pool = getPool();
   if(pool.length === 0){
     alert("Select at least one fact for the chosen operation.");
@@ -986,7 +1178,6 @@ function generate(){
 
 function generateWorksheets(pool, qType){
   let pagesHtml = "";
-
   const levelsLine = escapeHtml(selectedLevelsLine());
   const rowsPerCol = Math.floor(questionsPerPage / 3);
 
@@ -1004,7 +1195,7 @@ function generateWorksheets(pool, qType){
       cols += "<div class='col'>" + col + "</div>";
     }
 
-    const title = "Symbolic Practice Generator";
+    const title = "Symbolic Practice";
 
     pagesHtml += `
       <div class="printPage">
@@ -1041,8 +1232,7 @@ function generateFlashcards(pool){
   }
 
   function fmtFront(item){
-    if(item.op === "add") return item.a + " + " + item.b;
-    return item.a + " − " + item.b;
+    return item.op === "add" ? item.a + " + " + item.b : item.a + " − " + item.b;
   }
 
   let pagesHtml = "";
