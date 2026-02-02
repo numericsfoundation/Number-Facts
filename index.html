@@ -1316,10 +1316,12 @@ function openPrintWindow(pagesHtml){
     }
 
     .centerFrame{
-      width:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+    width:100%;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding-top: 40px;
+    box-sizing:border-box;
     }
 
     .worksheet{
@@ -1333,13 +1335,13 @@ function openPrintWindow(pagesHtml){
       font-weight:700;
       font-size:18px;
       text-align:center;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .worksheetLevels{
       font-size:13px;
       text-align:center;
-      margin-bottom: 18px;
+      margin-bottom: 32px;
       width: 860px;
     }
 
@@ -1350,6 +1352,7 @@ function openPrintWindow(pagesHtml){
       justify-content:center;
       font-size:14px;
       margin-bottom: 32px;
+      margin-bottom: 0;
     }
 
     .nameDateRow .label{ margin-right: 10px; white-space:nowrap; }
@@ -1366,6 +1369,7 @@ function openPrintWindow(pagesHtml){
       grid-template-columns: repeat(3, auto);
       column-gap: 80px;
       justify-content:center;
+      margin-top: 32px;
     }
 
     .col{ display:flex; flex-direction:column; }
