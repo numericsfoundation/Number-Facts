@@ -1122,16 +1122,16 @@ function fmtQuestion(item, qType){
   const a = item.a;
   const b = item.b;
 
-  if(item.op === "add"){
-    const t = a + b;
-    if(qType === "total") return { text: a + " + " + b, needsLine: true };
-    if(qType === "missAdd1") return { text: blankInline() + " + " + b + " = " + t, needsLine: false };
-    if(qType === "missAdd2") return { text: a + " + " + blankInline() + " = " + t, needsLine: false };
-    return { text: a + " + " + b, needsLine: true };
-  }
+ if(item.op === "add"){
+  const t = a + b;
+  if(qType === "total") return { text: a + " + " + b + " = ", needsLine: true };
+  if(qType === "missAdd1") return { text: blankInline() + " + " + b + " = " + t, needsLine: false };
+  if(qType === "missAdd2") return { text: a + " + " + blankInline() + " = " + t, needsLine: false };
+  return { text: a + " + " + b + " = ", needsLine: true };
+}
 
   const d = a - b;
-  if(qType === "total") return { text: a + " − " + b, needsLine: true };
+  if(qType === "total") return { text: a + " − " + b + " = ", needsLine: true };
   if(qType === "missSubtrahend") return { text: a + " − " + blankInline() + " = " + d, needsLine: false };
   if(qType === "missMinuend") return { text: blankInline() + " − " + b + " = " + d, needsLine: false };
   return { text: a + " − " + b, needsLine: true };
