@@ -1198,21 +1198,26 @@ function generateWorksheets(pool, qType){
     const title = "Symbolic Practice";
 
     pagesHtml += `
-      <div class="printPage">
-        <div class="centerFrame">
-          <div class="worksheet">
-            <div class="worksheetTitle">${escapeHtml(title)}</div>
-            <div class="worksheetLevels">${levelsLine}</div>
-            <div class="nameDateRow">
-              <span class="label">Name</span><span class="line"></span>
-              <span class="gap"></span>
-              <span class="label">Date</span><span class="line"></span>
-            </div>
-            <div class="cols">${cols}</div>
-          </div>
-        </div>
+  <div class="printPage">
+
+    <div class="printHeader">
+      <div class="worksheetTitle">${escapeHtml(title)}</div>
+      <div class="worksheetLevels">${levelsLine}</div>
+      <div class="nameDateRow">
+        <span class="label">Name</span><span class="line"></span>
+        <span class="gap"></span>
+        <span class="label">Date</span><span class="line"></span>
       </div>
-    `;
+    </div>
+
+    <div class="centerFrame">
+      <div class="worksheet">
+        <div class="cols">${cols}</div>
+      </div>
+    </div>
+
+  </div>
+`;
   }
 
   openPrintWindow(pagesHtml);
@@ -1308,11 +1313,22 @@ function openPrintWindow(pagesHtml){
 
     .printPage{
       page-break-after: always;
-      height: calc(100vh - 60px);
+      min-height: calc(11in - 60px);
+      padding-top: 140px;
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:center;
       box-sizing:border-box;
+}
+
+    .printHeader{
+      position: fixed;
+      top: 30px;
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .centerFrame{
