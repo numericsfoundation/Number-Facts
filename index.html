@@ -44,150 +44,6 @@
     margin: 2px 0 14px 0;
   }
 
-  .selectLayout{
-    display:grid;
-    grid-template-columns: auto 320px;
-    gap: 22px;
-    align-items:start;
-    justify-content:center;
-  }
-
-  .twoGrids{
-    display:flex;
-    justify-content:center;
-    gap: 26px;
-    flex-wrap:wrap;
-  }
-
-  .gridPanel{
-    min-width: 520px;
-  }
-
-  .panelTitle{
-    text-align:center;
-    font-weight:700;
-    margin: 0 0 10px 0;
-  }
-
-  .gridWrap{
-    display:flex;
-    justify-content:center;
-    overflow-x:auto;
-    padding: 0 4px;
-  }
-
-  table{
-    border-collapse: separate;
-    border-spacing: 10px 8px;
-  }
-
-  th, td{
-    text-align:center;
-    vertical-align: middle;
-    padding: 0;
-  }
-
-  .corner{
-    width: 46px;
-    height: 28px;
-  }
-
-  .colHeader,
-  .rowHeader{
-    background:#111;
-    color:#fff;
-    border-radius:4px;
-    font-weight:700;
-    font-size:12px;
-    line-height:28px;
-    user-select:none;
-  }
-
-  .colHeader{ width:68px; height:28px; }
-  .rowHeader{ width:46px; height:28px; }
-
-  .cell{
-    width:68px;
-    height:28px;
-    border:1px solid #cfcfcf;
-    border-radius:4px;
-    font-size:12px;
-    line-height:28px;
-    cursor:pointer;
-    user-select:none;
-    background:#fff;
-  }
-
-  .cell.selected{
-    background:#1f3a8a;
-    color:#fff;
-    border-color:#1f3a8a;
-  }
-
-  .cell.levelSelected{
-    outline: 3px solid #111;
-    outline-offset: -3px;
-  }
-
-  .cell.disabled{
-    background:#f2f2f2;
-    border-color:#e2e2e2;
-    cursor: default;
-    color: transparent;
-  }
-
-  .levelsBox{
-    border:1px solid #cfcfcf;
-    padding: 10px 10px 12px 10px;
-    border-radius:8px;
-    width: 320px;
-    box-sizing:border-box;
-  }
-
-  .levelsTitle{
-    font-weight:700;
-    text-align:left;
-    margin-bottom:10px;
-  }
-
-  .levelsSubtitle{
-    font-weight:700;
-    margin-top:12px;
-    margin-bottom:6px;
-    font-size:13px;
-  }
-
-  .levelRow{
-    display:flex;
-    align-items:flex-start;
-    gap:10px;
-    margin: 8px 0;
-    font-size:13px;
-  }
-
-  .levelRow input{
-    width: 16px;
-    height: 16px;
-    margin-top: 2px;
-  }
-
-  .buttonRow{
-    display:flex;
-    justify-content:center;
-    gap: 12px;
-    margin-top: 14px;
-    flex-wrap:wrap;
-  }
-
-  .btn{
-    padding:6px 14px;
-    border:1px solid #777;
-    background:#fff;
-    cursor:pointer;
-    border-radius:8px;
-    font-size:13px;
-  }
-
   .modeRow{
     display:flex;
     justify-content:center;
@@ -240,6 +96,7 @@
     gap: 14px;
     align-items:start;
     justify-items:center;
+    margin-top: 14px;
   }
 
   .designCard{
@@ -322,13 +179,160 @@
     font-size:13px;
   }
 
+  .selectLayout{
+    display:grid;
+    grid-template-columns: 1fr 520px;
+    gap: 22px;
+    align-items:start;
+    justify-content:center;
+  }
+
+  .twoGrids{
+    display:flex;
+    flex-direction:column;
+    gap: 26px;
+  }
+
+  .gridPanel{
+    width: 100%;
+  }
+
+  .panelTitle{
+    text-align:center;
+    font-weight:700;
+    margin: 0 0 10px 0;
+  }
+
+  .gridWrap{
+    display:flex;
+    justify-content:center;
+    overflow-x:auto;
+    padding: 0 4px;
+  }
+
+  table{
+    border-collapse: separate;
+    border-spacing: 10px 8px;
+  }
+
+  th, td{
+    text-align:center;
+    vertical-align: middle;
+    padding: 0;
+  }
+
+  .corner{
+    width: 46px;
+    height: 28px;
+  }
+
+  .colHeader,
+  .rowHeader{
+    background:#111;
+    color:#fff;
+    border-radius:4px;
+    font-weight:700;
+    font-size:12px;
+    line-height:28px;
+    user-select:none;
+  }
+
+  .colHeader{ width:68px; height:28px; }
+  .rowHeader{ width:46px; height:28px; }
+
+  .cell{
+    width:68px;
+    height:28px;
+    border:1px solid #cfcfcf;
+    border-radius:4px;
+    font-size:12px;
+    line-height:28px;
+    cursor:pointer;
+    user-select:none;
+    background:#fff;
+  }
+
+  .cell.selected{
+    background:#1f3a8a;
+    color:#fff;
+    border-color:#1f3a8a;
+  }
+
+  .cell.levelSelected{
+    outline: 3px solid #111;
+    outline-offset: -3px;
+  }
+
+  .cell.disabled{
+    background:#f2f2f2;
+    border-color:#e2e2e2;
+    cursor: default;
+    color: transparent;
+  }
+
+  .levelsBox{
+    border:1px solid #cfcfcf;
+    padding: 10px 10px 12px 10px;
+    border-radius:8px;
+    width: 520px;
+    box-sizing:border-box;
+
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .levelsTitle{
+    font-weight:700;
+    text-align:left;
+    margin-bottom:10px;
+  }
+
+  .levelsSubtitle{
+    font-weight:700;
+    margin-top:12px;
+    margin-bottom:6px;
+    font-size:13px;
+  }
+
+  .levelRow{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    margin: 8px 0;
+    font-size:13px;
+  }
+
+  .levelRow input{
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+  }
+
+  .buttonRow{
+    display:flex;
+    justify-content:center;
+    gap: 12px;
+    margin-top: 14px;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    padding:6px 14px;
+    border:1px solid #777;
+    background:#fff;
+    cursor:pointer;
+    border-radius:8px;
+    font-size:13px;
+  }
+
   @media (max-width: 1100px){
     .selectLayout{
       grid-template-columns: 1fr;
       justify-items:center;
     }
     .levelsBox{
-      width: min(520px, 100%);
+      width: min(900px, 100%);
     }
     .designGrid{
       grid-template-columns: 1fr;
@@ -354,12 +358,12 @@ Select addition or subtraction facts, then generate printable practice sheets or
   </div>
 
   <div class="opRow">
-    <button class="opBtn active" type="button" id="opAdd" onclick="setOp('add')">Addition only</button>
+    <button class="opBtn" type="button" id="opAdd" onclick="setOp('add')">Addition only</button>
     <button class="opBtn" type="button" id="opSub" onclick="setOp('sub')">Subtraction only</button>
-    <button class="opBtn" type="button" id="opBoth" onclick="setOp('both')">Both</button>
+    <button class="opBtn active" type="button" id="opBoth" onclick="setOp('both')">Both</button>
   </div>
 
-  <div class="designGrid" style="margin-top:14px;">
+  <div class="designGrid">
     <div class="designCard">
       <div class="designCardTitle">Practice sheet format</div>
       <select id="qType" onchange="updateHint()">
@@ -370,6 +374,13 @@ Select addition or subtraction facts, then generate printable practice sheets or
         <option value="missSubtrahend">Missing subtrahend</option>
       </select>
       <div class="hint" id="qTypeNote"></div>
+
+      <div class="subCardTitle">Question pattern</div>
+      <div class="choiceRow" id="patternButtons">
+        <button class="choice active" type="button" onclick="setPattern('random')">Random mix</button>
+        <button class="choice" type="button" onclick="setPattern('threeeach')">3 repeats each</button>
+        <button class="choice" type="button" onclick="setPattern('oncerepeat')">One time repeated</button>
+      </div>
     </div>
 
     <div class="designCard">
@@ -392,14 +403,6 @@ Select addition or subtraction facts, then generate printable practice sheets or
       </div>
     </div>
 
-     <div class="subCardTitle">Question pattern</div>
-      <div class="choiceRow" id="patternButtons">
-        <button class="choice active" type="button" onclick="setPattern('random')">Random mix</button>
-        <button class="choice" type="button" onclick="setPattern('threeeach')">3 repeats each</button>
-        <button class="choice" type="button" onclick="setPattern('oncerepeat')">One time repeated</button>
-      </div>
-    </div
-      
     <div class="designCard">
       <div class="designCardTitle">Generate</div>
       <div class="generateWrap">
@@ -417,19 +420,17 @@ Select addition or subtraction facts, then generate printable practice sheets or
 
 <div class="section">
   <div class="selectLayout">
+
     <div class="twoGrids">
-      <div class="gridPanel">
+      <div class="buttonRow">
+        <button class="btn" type="button" onclick="selectAllAddition()">Select all addition</button>
+        <button class="btn" type="button" onclick="clearAddition()">Clear addition</button>
+        <button class="btn" type="button" onclick="selectAllSubtraction()">Select all subtraction</button>
+        <button class="btn" type="button" onclick="clearSubtraction()">Clear subtraction</button>
+        <button class="btn" type="button" onclick="clearAll()">Clear all</button>
+      </div>
 
- <div class="buttonRow">
-    <button class="btn" type="button" onclick="selectAllAddition()">Select all addition</button>
-    <button class="btn" type="button" onclick="clearAddition()">Clear addition</button>
-    <button class="btn" type="button" onclick="selectAllSubtraction()">Select all subtraction</button>
-    <button class="btn" type="button" onclick="clearSubtraction()">Clear subtraction</button>
-    <button class="btn" type="button" onclick="clearAll()">Clear all</button>
-  </div>
-
-<div style="height:24px;"></div>
-
+      <div class="gridPanel" style="margin-top:18px;">
         <div class="panelTitle">Addition Facts</div>
         <div class="gridWrap">
           <table id="addTable"></table>
@@ -508,6 +509,7 @@ Select addition or subtraction facts, then generate printable practice sheets or
       <label class="levelRow"><input type="checkbox" id="lvl82" onchange="toggleLevel('8.2', this.checked)"><span>Level 8.2  Nine and more</span></label>
       <label class="levelRow"><input type="checkbox" id="lvl83" onchange="toggleLevel('8.3', this.checked)"><span>Level 8.3  Eight and more</span></label>
     </div>
+
   </div>
 
   <div class="buttonRow">
@@ -536,8 +538,9 @@ let manualSub = new Set();
 
 let pageCount = 1;
 let mode = "practice";
-let opChoice = "add";
+let opChoice = "both";
 let questionsPerPage = 30;
+let pattern = "random";
 
 const activeLevels = new Set();
 
@@ -619,20 +622,16 @@ function selectedLevelsLine(){
     const bp = b.split(".");
     const aMajor = parseInt(ap[0],10);
     const bMajor = parseInt(bp[0],10);
-
     if(aMajor !== bMajor) return aMajor - bMajor;
 
     const aMinorRaw = ap[1] || "0";
     const bMinorRaw = bp[1] || "0";
-
     const aMinor = parseInt(aMinorRaw,10);
     const bMinor = parseInt(bMinorRaw,10);
-
     if(aMinor !== bMinor) return aMinor - bMinor;
 
     const aSuf = (ap[2] || "");
     const bSuf = (bp[2] || "");
-
     return aSuf.localeCompare(bSuf);
   });
 
@@ -688,6 +687,8 @@ function buildAdditionTable(){
         const key = k(r,c);
         if(manualAdd.has(key)) manualAdd.delete(key);
         else manualAdd.add(key);
+
+        if(opChoice === "sub") setOp("both");
         refreshSelections();
       };
 
@@ -740,6 +741,8 @@ function buildSubtractionTable(){
         const key = k(r,c);
         if(manualSub.has(key)) manualSub.delete(key);
         else manualSub.add(key);
+
+        if(opChoice === "add") setOp("both");
         refreshSelections();
       };
 
@@ -779,6 +782,20 @@ function setQuestionsPerPage(n){
   document.querySelectorAll("#qppButtons .choice").forEach(b=>b.classList.remove("active"));
   Array.from(document.querySelectorAll("#qppButtons .choice")).forEach(btn=>{
     if(parseInt(btn.textContent,10) === n) btn.classList.add("active");
+  });
+
+  updateHint();
+}
+
+function setPattern(p){
+  pattern = p;
+
+  document.querySelectorAll("#patternButtons .choice").forEach(b=>b.classList.remove("active"));
+  const buttons = Array.from(document.querySelectorAll("#patternButtons .choice"));
+  buttons.forEach(btn=>{
+    const t = btn.textContent.trim();
+    const btnPattern = t.includes("3 repeats") ? "threeeach" : (t.includes("One time") ? "oncerepeat" : "random");
+    if(btnPattern === p) btn.classList.add("active");
   });
 
   updateHint();
@@ -1041,6 +1058,7 @@ function selectAllAddition(){
   for(let a=0;a<=MAX_N;a++){
     for(let b=0;b<=MAX_N;b++) manualAdd.add(k(a,b));
   }
+  if(opChoice === "sub") setOp("both");
   refreshSelections();
 }
 
@@ -1053,6 +1071,7 @@ function selectAllSubtraction(){
   for(let a=0;a<=SUB_ROW_MAX;a++){
     for(let b=0;b<=Math.min(a, MAX_N);b++) manualSub.add(k(a,b));
   }
+  if(opChoice === "add") setOp("both");
   refreshSelections();
 }
 
@@ -1068,15 +1087,12 @@ function clearAll(){
 
   [
     "lvl11","lvl12","lvl13",
-
     "lvl21a","lvl21b","lvl21c",
     "lvl22a","lvl22b","lvl22c",
     "lvl23a","lvl23b","lvl23c",
-
     "lvl31a","lvl31b","lvl31c",
     "lvl32a","lvl32b","lvl32c",
     "lvl33a","lvl33b","lvl33c",
-
     "lvl41","lvl42","lvl43",
     "lvl51","lvl52","lvl53","lvl54","lvl55",
     "lvl61","lvl62","lvl63","lvl64","lvl65",
@@ -1087,6 +1103,7 @@ function clearAll(){
     if(el) el.checked = false;
   });
 
+  setOp("both");
   refreshSelections();
 }
 
@@ -1118,6 +1135,17 @@ function pickFrom(pool){
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
+function shuffleCopy(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = a[i];
+    a[i] = a[j];
+    a[j] = tmp;
+  }
+  return a;
+}
+
 function valAnswer(item){
   return item.op === "add" ? item.a + item.b : item.a - item.b;
 }
@@ -1130,25 +1158,53 @@ function fmtQuestion(item, qType){
   const a = item.a;
   const b = item.b;
 
- if(item.op === "add"){
-  const t = a + b;
-  if(qType === "total") return { text: a + " + " + b + " = ", needsLine: true };
-  if(qType === "missAdd1") return { text: blankInline() + " + " + b + " = " + t, needsLine: false };
-  if(qType === "missAdd2") return { text: a + " + " + blankInline() + " = " + t, needsLine: false };
-  return { text: a + " + " + b + " = ", needsLine: true };
-}
+  if(item.op === "add"){
+    const t = a + b;
+    if(qType === "total") return { text: a + " + " + b + " = ", needsLine: true };
+    if(qType === "missAdd1") return { text: blankInline() + " + " + b + " = " + t, needsLine: false };
+    if(qType === "missAdd2") return { text: a + " + " + blankInline() + " = " + t, needsLine: false };
+    return { text: a + " + " + b + " = ", needsLine: true };
+  }
 
   const d = a - b;
   if(qType === "total") return { text: a + " − " + b + " = ", needsLine: true };
   if(qType === "missSubtrahend") return { text: a + " − " + blankInline() + " = " + d, needsLine: false };
   if(qType === "missMinuend") return { text: blankInline() + " − " + b + " = " + d, needsLine: false };
-  return { text: a + " − " + b, needsLine: true };
+  return { text: a + " − " + b + " = ", needsLine: true };
 }
 
 function compatiblePool(pool, qType){
   if(qType === "missAdd1" || qType === "missAdd2") return pool.filter(x=>x.op === "add");
   if(qType === "missMinuend" || qType === "missSubtrahend") return pool.filter(x=>x.op === "sub");
   return pool;
+}
+
+function generateQuestions(pool){
+  const out = [];
+
+  if(pattern === "random"){
+    for(let i=0;i<questionsPerPage;i++) out.push(pickFrom(pool));
+    return out;
+  }
+
+  if(pattern === "threeeach"){
+    const poolArray = pool.slice();
+    for(let i=0;i<questionsPerPage;i++){
+      out.push(poolArray[i % poolArray.length]);
+    }
+    return shuffleCopy(out).slice(0, questionsPerPage);
+  }
+
+  if(pattern === "oncerepeat"){
+    const poolArray = pool.slice();
+    for(let i=0;i<questionsPerPage;i++){
+      out.push(poolArray[i % poolArray.length]);
+    }
+    return out.slice(0, questionsPerPage);
+  }
+
+  for(let i=0;i<questionsPerPage;i++) out.push(pickFrom(pool));
+  return out;
 }
 
 function generate(){
@@ -1165,19 +1221,28 @@ function generate(){
   }
 
   let pool = getPool();
+
   if(pool.length === 0){
-    alert("Select at least one fact for the chosen operation.");
+    const anyManual = manualAdd.size > 0 || manualSub.size > 0;
+    if(anyManual){
+      setOp("both");
+      pool = getPool();
+    }
+  }
+
+  if(pool.length === 0){
+    alert("Select at least one fact.");
     return;
   }
 
   if(mode === "practice"){
     const qt = qTypeEl.value;
-    pool = compatiblePool(pool, qt);
-    if(pool.length === 0){
-      alert("That practice sheet format does not match your operation choice. Choose Addition only or Subtraction only, or change the format.");
+    const compat = compatiblePool(pool, qt);
+    if(compat.length === 0){
+      alert("That practice sheet format does not match your current operation choice.");
       return;
     }
-    generateWorksheets(pool, qt);
+    generateWorksheets(compat, qt);
     return;
   }
 
@@ -1188,14 +1253,17 @@ function generateWorksheets(pool, qType){
   let pagesHtml = "";
   const levelsLine = escapeHtml(selectedLevelsLine());
   const rowsPerCol = Math.floor(questionsPerPage / 3);
+  const pageQuestions = () => generateQuestions(pool);
 
   for(let p=0;p<pageCount;p++){
+    const qs = pageQuestions();
     let cols = "";
 
     for(let c=0;c<3;c++){
       let col = "";
       for(let r=0;r<rowsPerCol;r++){
-        const q = pickFrom(pool);
+        const idx = c * rowsPerCol + r;
+        const q = qs[idx % qs.length];
         const qObj = fmtQuestion(q, qType);
         const line = qObj.needsLine ? "<span class='ans'></span>" : "";
         col += "<div class='q'>" + escapeHtml(qObj.text) + line + "</div>";
@@ -1207,7 +1275,6 @@ function generateWorksheets(pool, qType){
 
     pagesHtml += `
   <div class="printPage">
-
     <div class="printHeader">
       <div class="worksheetTitle">${escapeHtml(title)}</div>
       <div class="worksheetLevels">${levelsLine}</div>
@@ -1223,7 +1290,6 @@ function generateWorksheets(pool, qType){
         <div class="cols">${cols}</div>
       </div>
     </div>
-
   </div>
 `;
   }
@@ -1327,7 +1393,7 @@ function openPrintWindow(pagesHtml){
       align-items:flex-start;
       justify-content:center;
       box-sizing:border-box;
-}
+    }
 
     .printHeader{
       position: fixed;
@@ -1340,12 +1406,12 @@ function openPrintWindow(pagesHtml){
     }
 
     .centerFrame{
-    width:100%;
-    display:flex;
-    align-items:flex-start;
-    justify-content:center;
-    padding-top: 40px;
-    box-sizing:border-box;
+      width:100%;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding-top: 40px;
+      box-sizing:border-box;
     }
 
     .worksheet{
@@ -1365,7 +1431,7 @@ function openPrintWindow(pagesHtml){
     .worksheetLevels{
       font-size:13px;
       text-align:center;
-      margin-bottom: 32px;
+      margin-bottom: 12px;
       width: 860px;
     }
 
@@ -1375,7 +1441,6 @@ function openPrintWindow(pagesHtml){
       align-items:flex-end;
       justify-content:center;
       font-size:14px;
-      margin-bottom: 32px;
       margin-bottom: 0;
     }
 
@@ -1393,7 +1458,7 @@ function openPrintWindow(pagesHtml){
       grid-template-columns: repeat(3, auto);
       column-gap: 80px;
       justify-content:center;
-      margin-top: 32px;
+      margin-top: 10px;
     }
 
     .col{ display:flex; flex-direction:column; }
