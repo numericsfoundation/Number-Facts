@@ -276,7 +276,6 @@
     border-radius:8px;
     width: 520px;
     box-sizing:border-box;
-
     height: auto;
     max-height: none;
     overflow: visible;
@@ -374,6 +373,12 @@ Select addition or subtraction facts, then generate printable practice sheets or
         <option value="missSubtrahend">Missing subtrahend</option>
       </select>
       <div class="hint" id="qTypeNote"></div>
+
+      <div class="subCardTitle">Equation order</div>
+      <div class="choiceRow" id="orderButtons">
+        <button class="choice active" type="button" onclick="setEqOrder('standard')">Expression first</button>
+        <button class="choice" type="button" onclick="setEqOrder('totalFirst')">Total first</button>
+      </div>
 
       <div class="subCardTitle">Question pattern</div>
       <div class="choiceRow" id="patternButtons">
@@ -524,28 +529,29 @@ Select addition or subtraction facts, then generate printable practice sheets or
 </div>
 
 <script>
-const MAX_N = 10;
-const SUB_ROW_MAX = 20;
+const MAX_N = 10
+const SUB_ROW_MAX = 20
 
-const addTable = document.getElementById("addTable");
-const subTable = document.getElementById("subTable");
-const hint = document.getElementById("hint");
-const qTypeEl = document.getElementById("qType");
-const qTypeNote = document.getElementById("qTypeNote");
+const addTable = document.getElementById("addTable")
+const subTable = document.getElementById("subTable")
+const hint = document.getElementById("hint")
+const qTypeEl = document.getElementById("qType")
+const qTypeNote = document.getElementById("qTypeNote")
 
-let manualAdd = new Set();
-let manualSub = new Set();
+let manualAdd = new Set()
+let manualSub = new Set()
 
-let pageCount = 1;
-let mode = "practice";
-let opChoice = "both";
-let questionsPerPage = 30;
-let pattern = "random";
+let pageCount = 1
+let mode = "practice"
+let opChoice = "both"
+let questionsPerPage = 30
+let pattern = "random"
+let eqOrder = "standard"
 
-const activeLevels = new Set();
+const activeLevels = new Set()
 
-const addCells = {};
-const subCells = {};
+const addCells = {}
+const subCells = {}
 
 const LEVEL_NAMES = {
   "1.1":"No more, no less within 5",
@@ -596,12 +602,12 @@ const LEVEL_NAMES = {
   "8.1":"Ten and more",
   "8.2":"Nine and more",
   "8.3":"Eight and more"
-};
+}
 
-function k(a,b){ return a + "|" + b; }
+function k(a,b){ return a + "|" + b }
 function parseKey(s){
-  const p = s.split("|");
-  return { a: parseInt(p[0],10), b: parseInt(p[1],10) };
+  const p = s.split("|")
+  return { a: parseInt(p[0],10), b: parseInt(p[1],10) }
 }
 
 function escapeHtml(s){
@@ -610,480 +616,492 @@ function escapeHtml(s){
     .replaceAll("<","&lt;")
     .replaceAll(">","&gt;")
     .replaceAll('"',"&quot;")
-    .replaceAll("'","&#39;");
+    .replaceAll("'","&#39;")
 }
 
 function selectedLevelsLine(){
-  if(activeLevels.size === 0) return "Manual selection";
-  const list = Array.from(activeLevels);
+  if(activeLevels.size === 0) return "Manual selection"
+  const list = Array.from(activeLevels)
 
   list.sort((a,b)=>{
-    const ap = a.split(".");
-    const bp = b.split(".");
-    const aMajor = parseInt(ap[0],10);
-    const bMajor = parseInt(bp[0],10);
-    if(aMajor !== bMajor) return aMajor - bMajor;
+    const ap = a.split(".")
+    const bp = b.split(".")
+    const aMajor = parseInt(ap[0],10)
+    const bMajor = parseInt(bp[0],10)
+    if(aMajor !== bMajor) return aMajor - bMajor
 
-    const aMinorRaw = ap[1] || "0";
-    const bMinorRaw = bp[1] || "0";
-    const aMinor = parseInt(aMinorRaw,10);
-    const bMinor = parseInt(bMinorRaw,10);
-    if(aMinor !== bMinor) return aMinor - bMinor;
+    const aMinorRaw = ap[1] || "0"
+    const bMinorRaw = bp[1] || "0"
+    const aMinor = parseInt(aMinorRaw,10)
+    const bMinor = parseInt(bMinorRaw,10)
+    if(aMinor !== bMinor) return aMinor - bMinor
 
-    const aSuf = (ap[2] || "");
-    const bSuf = (bp[2] || "");
-    return aSuf.localeCompare(bSuf);
-  });
+    const aSuf = (ap[2] || "")
+    const bSuf = (bp[2] || "")
+    return aSuf.localeCompare(bSuf)
+  })
 
-  return list.map(id=>"Level " + id + " " + (LEVEL_NAMES[id] || "")).join(", ");
+  return list.map(id=>"Level " + id + " " + (LEVEL_NAMES[id] || "")).join(", ")
 }
 
 function anyMakingLevelSelected(){
   for(const l of activeLevels){
-    if(l.startsWith("5.")) return true;
+    if(l.startsWith("5.")) return true
   }
-  return false;
+  return false
 }
 
 function anyMoreThanTenSelected(){
   for(const l of activeLevels){
-    if(l.startsWith("8.")) return true;
+    if(l.startsWith("8.")) return true
   }
-  return false;
+  return false
 }
 
 function buildAdditionTable(){
-  addTable.innerHTML = "";
+  addTable.innerHTML = ""
 
-  const hr = document.createElement("tr");
-  const corner = document.createElement("th");
-  corner.className = "corner";
-  hr.appendChild(corner);
+  const hr = document.createElement("tr")
+  const corner = document.createElement("th")
+  corner.className = "corner"
+  hr.appendChild(corner)
 
   for(let c=0;c<=MAX_N;c++){
-    const th = document.createElement("th");
-    th.className = "colHeader";
-    th.textContent = c;
-    hr.appendChild(th);
+    const th = document.createElement("th")
+    th.className = "colHeader"
+    th.textContent = c
+    hr.appendChild(th)
   }
-  addTable.appendChild(hr);
+  addTable.appendChild(hr)
 
   for(let r=0;r<=MAX_N;r++){
-    const tr = document.createElement("tr");
+    const tr = document.createElement("tr")
 
-    const rh = document.createElement("th");
-    rh.className = "rowHeader";
-    rh.textContent = r;
-    tr.appendChild(rh);
+    const rh = document.createElement("th")
+    rh.className = "rowHeader"
+    rh.textContent = r
+    tr.appendChild(rh)
 
     for(let c=0;c<=MAX_N;c++){
-      const td = document.createElement("td");
-      td.className = "cell";
-      td.textContent = r + " + " + c;
+      const td = document.createElement("td")
+      td.className = "cell"
+      td.textContent = r + " + " + c
 
-      addCells[k(r,c)] = td;
+      addCells[k(r,c)] = td
 
       td.onclick = () => {
-        const key = k(r,c);
-        if(manualAdd.has(key)) manualAdd.delete(key);
-        else manualAdd.add(key);
+        const key = k(r,c)
+        if(manualAdd.has(key)) manualAdd.delete(key)
+        else manualAdd.add(key)
 
-        if(opChoice === "sub") setOp("both");
-        refreshSelections();
-      };
+        if(opChoice === "sub") setOp("both")
+        refreshSelections()
+      }
 
-      tr.appendChild(td);
+      tr.appendChild(td)
     }
-    addTable.appendChild(tr);
+    addTable.appendChild(tr)
   }
 }
 
 function buildSubtractionTable(){
-  subTable.innerHTML = "";
+  subTable.innerHTML = ""
 
-  const hr = document.createElement("tr");
-  const corner = document.createElement("th");
-  corner.className = "corner";
-  hr.appendChild(corner);
+  const hr = document.createElement("tr")
+  const corner = document.createElement("th")
+  corner.className = "corner"
+  hr.appendChild(corner)
 
   for(let c=0;c<=MAX_N;c++){
-    const th = document.createElement("th");
-    th.className = "colHeader";
-    th.textContent = c;
-    hr.appendChild(th);
+    const th = document.createElement("th")
+    th.className = "colHeader"
+    th.textContent = c
+    hr.appendChild(th)
   }
-  subTable.appendChild(hr);
+  subTable.appendChild(hr)
 
   for(let r=0;r<=SUB_ROW_MAX;r++){
-    const tr = document.createElement("tr");
+    const tr = document.createElement("tr")
 
-    const rh = document.createElement("th");
-    rh.className = "rowHeader";
-    rh.textContent = r;
-    tr.appendChild(rh);
+    const rh = document.createElement("th")
+    rh.className = "rowHeader"
+    rh.textContent = r
+    tr.appendChild(rh)
 
     for(let c=0;c<=MAX_N;c++){
-      const td = document.createElement("td");
+      const td = document.createElement("td")
 
       if(r < c){
-        td.className = "cell disabled";
-        td.textContent = "";
-        tr.appendChild(td);
-        continue;
+        td.className = "cell disabled"
+        td.textContent = ""
+        tr.appendChild(td)
+        continue
       }
 
-      td.className = "cell";
-      td.textContent = r + " − " + c;
+      td.className = "cell"
+      td.textContent = r + " − " + c
 
-      subCells[k(r,c)] = td;
+      subCells[k(r,c)] = td
 
       td.onclick = () => {
-        const key = k(r,c);
-        if(manualSub.has(key)) manualSub.delete(key);
-        else manualSub.add(key);
+        const key = k(r,c)
+        if(manualSub.has(key)) manualSub.delete(key)
+        else manualSub.add(key)
 
-        if(opChoice === "add") setOp("both");
-        refreshSelections();
-      };
+        if(opChoice === "add") setOp("both")
+        refreshSelections()
+      }
 
-      tr.appendChild(td);
+      tr.appendChild(td)
     }
-    subTable.appendChild(tr);
+    subTable.appendChild(tr)
   }
 }
 
 function setMode(m){
-  mode = m;
-  document.getElementById("modePractice").classList.toggle("active", m === "practice");
-  document.getElementById("modeFlash").classList.toggle("active", m === "flashcards");
-  updateHint();
+  mode = m
+  document.getElementById("modePractice").classList.toggle("active", m === "practice")
+  document.getElementById("modeFlash").classList.toggle("active", m === "flashcards")
+  updateHint()
 }
 
 function setOp(o){
-  opChoice = o;
-  document.getElementById("opAdd").classList.toggle("active", o === "add");
-  document.getElementById("opSub").classList.toggle("active", o === "sub");
-  document.getElementById("opBoth").classList.toggle("active", o === "both");
-  updateHint();
+  opChoice = o
+  document.getElementById("opAdd").classList.toggle("active", o === "add")
+  document.getElementById("opSub").classList.toggle("active", o === "sub")
+  document.getElementById("opBoth").classList.toggle("active", o === "both")
+  updateHint()
 }
 
 function setPages(n){
-  pageCount = n;
-  document.querySelectorAll("#pageButtons .choice").forEach(b=>b.classList.remove("active"));
+  pageCount = n
+  document.querySelectorAll("#pageButtons .choice").forEach(b=>b.classList.remove("active"))
   Array.from(document.querySelectorAll("#pageButtons .choice")).forEach(btn=>{
-    if(parseInt(btn.textContent,10) === n) btn.classList.add("active");
-  });
+    if(parseInt(btn.textContent,10) === n) btn.classList.add("active")
+  })
 }
 
 function setQuestionsPerPage(n){
-  if(n !== 12 && n !== 18 && n !== 24 && n !== 30) n = 30;
-  questionsPerPage = n;
+  if(n !== 12 && n !== 18 && n !== 24 && n !== 30) n = 30
+  questionsPerPage = n
 
-  document.querySelectorAll("#qppButtons .choice").forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll("#qppButtons .choice").forEach(b=>b.classList.remove("active"))
   Array.from(document.querySelectorAll("#qppButtons .choice")).forEach(btn=>{
-    if(parseInt(btn.textContent,10) === n) btn.classList.add("active");
-  });
+    if(parseInt(btn.textContent,10) === n) btn.classList.add("active")
+  })
 
-  updateHint();
+  updateHint()
 }
 
 function setPattern(p){
-  pattern = p;
+  pattern = p
 
-  document.querySelectorAll("#patternButtons .choice").forEach(b=>b.classList.remove("active"));
-  const buttons = Array.from(document.querySelectorAll("#patternButtons .choice"));
+  document.querySelectorAll("#patternButtons .choice").forEach(b=>b.classList.remove("active"))
+  const buttons = Array.from(document.querySelectorAll("#patternButtons .choice"))
   buttons.forEach(btn=>{
-    const t = btn.textContent.trim();
-    const btnPattern = t.includes("3 repeats") ? "threeeach" : (t.includes("One time") ? "oncerepeat" : "random");
-    if(btnPattern === p) btn.classList.add("active");
-  });
+    const t = btn.textContent.trim()
+    const btnPattern = t.includes("3 repeats") ? "threeeach" : (t.includes("One time") ? "oncerepeat" : "random")
+    if(btnPattern === p) btn.classList.add("active")
+  })
 
-  updateHint();
+  updateHint()
+}
+
+function setEqOrder(o){
+  eqOrder = o
+  document.querySelectorAll("#orderButtons .choice").forEach(b=>b.classList.remove("active"))
+  const buttons = Array.from(document.querySelectorAll("#orderButtons .choice"))
+  buttons.forEach(btn=>{
+    const t = btn.textContent.trim()
+    const btnOrder = t.includes("Total") ? "totalFirst" : "standard"
+    if(btnOrder === o) btn.classList.add("active")
+  })
+  updateHint()
 }
 
 function updateHint(){
-  const qt = qTypeEl.value;
+  const qt = qTypeEl.value
 
   if(mode === "practice"){
-    const rowsPerCol = Math.floor(questionsPerPage / 3);
-    hint.textContent = "Practice sheets include " + questionsPerPage + " questions per sheet arranged in 3 columns of " + rowsPerCol + ".";
+    const rowsPerCol = Math.floor(questionsPerPage / 3)
+    hint.textContent = "Practice sheets include " + questionsPerPage + " questions per sheet arranged in 3 columns of " + rowsPerCol + "."
   }else{
-    hint.textContent = "Flashcards include 10 cards per sheet plus a matching answer back sheet.";
+    hint.textContent = "Flashcards include 10 cards per sheet plus a matching answer back sheet."
   }
 
-  if(qt === "total") qTypeNote.textContent = "Answer is written on the line.";
-  if(qt === "missAdd1") qTypeNote.textContent = "Blank is the first addend.";
-  if(qt === "missAdd2") qTypeNote.textContent = "Blank is the second addend.";
-  if(qt === "missMinuend") qTypeNote.textContent = "Blank is the minuend.";
-  if(qt === "missSubtrahend") qTypeNote.textContent = "Blank is the subtrahend.";
+  if(qt === "total") qTypeNote.textContent = eqOrder === "totalFirst" ? "Blank is the total: ____ = parts." : "Answer is written on the line."
+  if(qt === "missAdd1") qTypeNote.textContent = eqOrder === "totalFirst" ? "Total is shown first. Blank is the first addend." : "Blank is the first addend."
+  if(qt === "missAdd2") qTypeNote.textContent = eqOrder === "totalFirst" ? "Total is shown first. Blank is the second addend." : "Blank is the second addend."
+  if(qt === "missMinuend") qTypeNote.textContent = eqOrder === "totalFirst" ? "Total is shown first. Blank is the minuend." : "Blank is the minuend."
+  if(qt === "missSubtrahend") qTypeNote.textContent = eqOrder === "totalFirst" ? "Total is shown first. Blank is the subtrahend." : "Blank is the subtrahend."
 }
 
 function addPairsForTotal(total){
-  const add = [];
+  const add = []
   for(let a=0;a<=MAX_N;a++){
-    const b = total - a;
-    if(b < 0 || b > MAX_N) continue;
-    add.push([a,b]);
+    const b = total - a
+    if(b < 0 || b > MAX_N) continue
+    add.push([a,b])
   }
-  return add;
+  return add
 }
 
 function doublesToTen(){
-  const add = [];
-  for(let a=0;a<=5;a++) add.push([a,a]);
-  return add;
+  const add = []
+  for(let a=0;a<=5;a++) add.push([a,a])
+  return add
 }
 
 function doublesWithin20(){
-  const add = [];
-  for(let a=0;a<=10;a++) add.push([a,a]);
-  return add;
+  const add = []
+  for(let a=0;a<=10;a++) add.push([a,a])
+  return add
 }
 
 function halvesWithin20(){
-  const sub = [];
-  sub.push([0,0]);
+  const sub = []
+  sub.push([0,0])
   for(let a=2;a<=20;a+=2){
-    sub.push([a, a/2]);
+    sub.push([a, a/2])
   }
-  return sub;
+  return sub
 }
 
 function doubles12to20(){
-  const add = [];
-  for(let a=6;a<=10;a++) add.push([a,a]);
-  return add;
+  const add = []
+  for(let a=6;a<=10;a++) add.push([a,a])
+  return add
 }
 
 function halves12to20(){
-  const sub = [];
+  const sub = []
   for(let a=12;a<=20;a+=2){
-    sub.push([a, a/2]);
+    sub.push([a, a/2])
   }
-  return sub;
+  return sub
 }
 
 function beyondTenFixedLeft(fixed){
-  const add = [];
-  const minMore = Math.max(1, 11 - fixed);
+  const add = []
+  const minMore = Math.max(1, 11 - fixed)
   for(let more=minMore; more<=MAX_N; more++){
-    const sum = fixed + more;
-    if(sum <= 10) continue;
-    add.push([fixed, more]);
-    add.push([more, fixed]);
+    const sum = fixed + more
+    if(sum <= 10) continue
+    add.push([fixed, more])
+    add.push([more, fixed])
   }
-  return add;
+  return add
 }
 
 function fixedAddendFactsWithRange(rangeMin, rangeMax, fixed, modeId){
-  const add = [];
-  const sub = [];
+  const add = []
+  const sub = []
 
-  const min = Math.max(0, rangeMin);
-  const max = Math.min(MAX_N, rangeMax);
+  const min = Math.max(0, rangeMin)
+  const max = Math.min(MAX_N, rangeMax)
 
   const addSecond = () => {
     for(let x=min;x<=max;x++){
-      add.push([x, fixed]);
-      if(x >= fixed) sub.push([x, fixed]);
+      add.push([x, fixed])
+      if(x >= fixed) sub.push([x, fixed])
     }
-  };
+  }
 
   const addFirst = () => {
     for(let x=min;x<=max;x++){
-      add.push([fixed, x]);
-      if(fixed >= x) sub.push([fixed, x]);
+      add.push([fixed, x])
+      if(fixed >= x) sub.push([fixed, x])
     }
-  };
+  }
 
-  if(modeId === "second") addSecond();
-  if(modeId === "first") addFirst();
-  if(modeId === "both"){ addSecond(); addFirst(); }
+  if(modeId === "second") addSecond()
+  if(modeId === "first") addFirst()
+  if(modeId === "both"){ addSecond(); addFirst() }
 
-  return { add, sub };
+  return { add, sub }
 }
 
 function levelFacts(level){
   if(level === "1.1"){
-    const add = [];
-    const sub = [];
+    const add = []
+    const sub = []
     for(let a=0;a<=5;a++){
-      add.push([a,0]);
-      add.push([0,a]);
-      sub.push([a,0]);
+      add.push([a,0])
+      add.push([0,a])
+      sub.push([a,0])
     }
-    return { add, sub };
+    return { add, sub }
   }
 
   if(level === "1.2"){
-    const add = [];
-    const sub = [];
+    const add = []
+    const sub = []
     for(let a=6;a<=10;a++){
-      add.push([a,0]);
-      add.push([0,a]);
-      sub.push([a,0]);
+      add.push([a,0])
+      add.push([0,a])
+      sub.push([a,0])
     }
-    return { add, sub };
+    return { add, sub }
   }
 
   if(level === "1.3"){
-    const add = [];
-    const sub = [];
+    const add = []
+    const sub = []
     for(let a=0;a<=10;a++){
-      add.push([a,0]);
-      add.push([0,a]);
-      sub.push([a,0]);
+      add.push([a,0])
+      add.push([0,a])
+      sub.push([a,0])
     }
-    return { add, sub };
+    return { add, sub }
   }
 
-  if(level === "2.1a") return fixedAddendFactsWithRange(0,5,1,"second");
-  if(level === "2.1b") return fixedAddendFactsWithRange(0,5,1,"first");
-  if(level === "2.1c") return fixedAddendFactsWithRange(0,5,1,"both");
+  if(level === "2.1a") return fixedAddendFactsWithRange(0,5,1,"second")
+  if(level === "2.1b") return fixedAddendFactsWithRange(0,5,1,"first")
+  if(level === "2.1c") return fixedAddendFactsWithRange(0,5,1,"both")
 
-  if(level === "2.2a") return fixedAddendFactsWithRange(6,10,1,"second");
-  if(level === "2.2b") return fixedAddendFactsWithRange(6,10,1,"first");
-  if(level === "2.2c") return fixedAddendFactsWithRange(6,10,1,"both");
+  if(level === "2.2a") return fixedAddendFactsWithRange(6,10,1,"second")
+  if(level === "2.2b") return fixedAddendFactsWithRange(6,10,1,"first")
+  if(level === "2.2c") return fixedAddendFactsWithRange(6,10,1,"both")
 
-  if(level === "2.3a") return fixedAddendFactsWithRange(0,10,1,"second");
-  if(level === "2.3b") return fixedAddendFactsWithRange(0,10,1,"first");
-  if(level === "2.3c") return fixedAddendFactsWithRange(0,10,1,"both");
+  if(level === "2.3a") return fixedAddendFactsWithRange(0,10,1,"second")
+  if(level === "2.3b") return fixedAddendFactsWithRange(0,10,1,"first")
+  if(level === "2.3c") return fixedAddendFactsWithRange(0,10,1,"both")
 
-  if(level === "3.1a") return fixedAddendFactsWithRange(0,5,2,"second");
-  if(level === "3.1b") return fixedAddendFactsWithRange(0,5,2,"first");
-  if(level === "3.1c") return fixedAddendFactsWithRange(0,5,2,"both");
+  if(level === "3.1a") return fixedAddendFactsWithRange(0,5,2,"second")
+  if(level === "3.1b") return fixedAddendFactsWithRange(0,5,2,"first")
+  if(level === "3.1c") return fixedAddendFactsWithRange(0,5,2,"both")
 
-  if(level === "3.2a") return fixedAddendFactsWithRange(6,10,2,"second");
-  if(level === "3.2b") return fixedAddendFactsWithRange(6,10,2,"first");
-  if(level === "3.2c") return fixedAddendFactsWithRange(6,10,2,"both");
+  if(level === "3.2a") return fixedAddendFactsWithRange(6,10,2,"second")
+  if(level === "3.2b") return fixedAddendFactsWithRange(6,10,2,"first")
+  if(level === "3.2c") return fixedAddendFactsWithRange(6,10,2,"both")
 
-  if(level === "3.3a") return fixedAddendFactsWithRange(0,10,2,"second");
-  if(level === "3.3b") return fixedAddendFactsWithRange(0,10,2,"first");
-  if(level === "3.3c") return fixedAddendFactsWithRange(0,10,2,"both");
+  if(level === "3.3a") return fixedAddendFactsWithRange(0,10,2,"second")
+  if(level === "3.3b") return fixedAddendFactsWithRange(0,10,2,"first")
+  if(level === "3.3c") return fixedAddendFactsWithRange(0,10,2,"both")
 
-  if(level === "4.1") return { add: doublesToTen(), sub:[] };
-  if(level === "4.2") return { add: doublesWithin20(), sub:[] };
+  if(level === "4.1") return { add: doublesToTen(), sub:[] }
+  if(level === "4.2") return { add: doublesWithin20(), sub:[] }
   if(level === "4.3"){
-    const sub = [];
-    sub.push([0,0]);
-    for(let a=2;a<=10;a+=2) sub.push([a, a/2]);
-    return { add:[], sub };
+    const sub = []
+    sub.push([0,0])
+    for(let a=2;a<=10;a+=2) sub.push([a, a/2])
+    return { add:[], sub }
   }
 
-  if(level === "5.1") return { add: addPairsForTotal(6), sub:[] };
-  if(level === "5.2") return { add: addPairsForTotal(7), sub:[] };
-  if(level === "5.3") return { add: addPairsForTotal(8), sub:[] };
-  if(level === "5.4") return { add: addPairsForTotal(9), sub:[] };
-  if(level === "5.5") return { add: addPairsForTotal(10), sub:[] };
+  if(level === "5.1") return { add: addPairsForTotal(6), sub:[] }
+  if(level === "5.2") return { add: addPairsForTotal(7), sub:[] }
+  if(level === "5.3") return { add: addPairsForTotal(8), sub:[] }
+  if(level === "5.4") return { add: addPairsForTotal(9), sub:[] }
+  if(level === "5.5") return { add: addPairsForTotal(10), sub:[] }
 
-  if(level === "6.1"){ const sub=[]; for(let b=0;b<=6;b++) sub.push([6,b]); return { add:[], sub }; }
-  if(level === "6.2"){ const sub=[]; for(let b=0;b<=7;b++) sub.push([7,b]); return { add:[], sub }; }
-  if(level === "6.3"){ const sub=[]; for(let b=0;b<=8;b++) sub.push([8,b]); return { add:[], sub }; }
-  if(level === "6.4"){ const sub=[]; for(let b=0;b<=9;b++) sub.push([9,b]); return { add:[], sub }; }
-  if(level === "6.5"){ const sub=[]; for(let b=0;b<=10;b++) sub.push([10,b]); return { add:[], sub }; }
+  if(level === "6.1"){ const sub=[]; for(let b=0;b<=6;b++) sub.push([6,b]); return { add:[], sub } }
+  if(level === "6.2"){ const sub=[]; for(let b=0;b<=7;b++) sub.push([7,b]); return { add:[], sub } }
+  if(level === "6.3"){ const sub=[]; for(let b=0;b<=8;b++) sub.push([8,b]); return { add:[], sub } }
+  if(level === "6.4"){ const sub=[]; for(let b=0;b<=9;b++) sub.push([9,b]); return { add:[], sub } }
+  if(level === "6.5"){ const sub=[]; for(let b=0;b<=10;b++) sub.push([10,b]); return { add:[], sub } }
 
-  if(level === "7.1") return { add: doubles12to20(), sub:[] };
-  if(level === "7.2") return { add: doublesWithin20(), sub:[] };
-  if(level === "7.3") return { add:[], sub: halves12to20() };
-  if(level === "7.4") return { add:[], sub: halvesWithin20() };
+  if(level === "7.1") return { add: doubles12to20(), sub:[] }
+  if(level === "7.2") return { add: doublesWithin20(), sub:[] }
+  if(level === "7.3") return { add:[], sub: halves12to20() }
+  if(level === "7.4") return { add:[], sub: halvesWithin20() }
 
-  if(level === "8.1") return { add: beyondTenFixedLeft(10), sub:[] };
-  if(level === "8.2") return { add: beyondTenFixedLeft(9), sub:[] };
-  if(level === "8.3") return { add: beyondTenFixedLeft(8), sub:[] };
+  if(level === "8.1") return { add: beyondTenFixedLeft(10), sub:[] }
+  if(level === "8.2") return { add: beyondTenFixedLeft(9), sub:[] }
+  if(level === "8.3") return { add: beyondTenFixedLeft(8), sub:[] }
 
-  return { add:[], sub:[] };
+  return { add:[], sub:[] }
 }
 
 function getLevelSets(){
-  const levelAdd = new Set();
-  const levelSub = new Set();
+  const levelAdd = new Set()
+  const levelSub = new Set()
 
   activeLevels.forEach(level=>{
-    const f = levelFacts(level);
-    f.add.forEach(([a,b])=>levelAdd.add(k(a,b)));
-    f.sub.forEach(([a,b])=>levelSub.add(k(a,b)));
-  });
+    const f = levelFacts(level)
+    f.add.forEach(([a,b])=>levelAdd.add(k(a,b)))
+    f.sub.forEach(([a,b])=>levelSub.add(k(a,b)))
+  })
 
-  return { levelAdd, levelSub };
+  return { levelAdd, levelSub }
 }
 
 function refreshSelections(){
-  const { levelAdd, levelSub } = getLevelSets();
-  const unionAdd = new Set([...manualAdd, ...levelAdd]);
-  const unionSub = new Set([...manualSub, ...levelSub]);
+  const { levelAdd, levelSub } = getLevelSets()
+  const unionAdd = new Set([...manualAdd, ...levelAdd])
+  const unionSub = new Set([...manualSub, ...levelSub])
 
   for(let a=0;a<=MAX_N;a++){
     for(let b=0;b<=MAX_N;b++){
-      const key = a + "|" + b;
-      const addCell = addCells[key];
+      const key = a + "|" + b
+      const addCell = addCells[key]
       if(addCell){
-        addCell.classList.toggle("selected", unionAdd.has(key));
-        addCell.classList.toggle("levelSelected", levelAdd.has(key));
+        addCell.classList.toggle("selected", unionAdd.has(key))
+        addCell.classList.toggle("levelSelected", levelAdd.has(key))
       }
     }
   }
 
   for(let a=0;a<=SUB_ROW_MAX;a++){
     for(let b=0;b<=MAX_N;b++){
-      const key = a + "|" + b;
-      const subCell = subCells[key];
+      const key = a + "|" + b
+      const subCell = subCells[key]
       if(subCell){
-        subCell.classList.toggle("selected", unionSub.has(key));
-        subCell.classList.toggle("levelSelected", levelSub.has(key));
+        subCell.classList.toggle("selected", unionSub.has(key))
+        subCell.classList.toggle("levelSelected", levelSub.has(key))
       }
     }
   }
 }
 
 function toggleLevel(level, on){
-  if(on) activeLevels.add(level);
-  else activeLevels.delete(level);
+  if(on) activeLevels.add(level)
+  else activeLevels.delete(level)
 
   if(anyMakingLevelSelected()){
-    setOp("add");
+    setOp("add")
     if(mode === "practice"){
-      qTypeEl.value = "missAdd2";
-      updateHint();
+      qTypeEl.value = "missAdd2"
+      updateHint()
     }
   }
 
   if(anyMoreThanTenSelected()){
-    setOp("add");
+    setOp("add")
   }
 
-  refreshSelections();
+  refreshSelections()
 }
 
 function selectAllAddition(){
   for(let a=0;a<=MAX_N;a++){
-    for(let b=0;b<=MAX_N;b++) manualAdd.add(k(a,b));
+    for(let b=0;b<=MAX_N;b++) manualAdd.add(k(a,b))
   }
-  if(opChoice === "sub") setOp("both");
-  refreshSelections();
+  if(opChoice === "sub") setOp("both")
+  refreshSelections()
 }
 
 function clearAddition(){
-  manualAdd.clear();
-  refreshSelections();
+  manualAdd.clear()
+  refreshSelections()
 }
 
 function selectAllSubtraction(){
   for(let a=0;a<=SUB_ROW_MAX;a++){
-    for(let b=0;b<=Math.min(a, MAX_N);b++) manualSub.add(k(a,b));
+    for(let b=0;b<=Math.min(a, MAX_N);b++) manualSub.add(k(a,b))
   }
-  if(opChoice === "add") setOp("both");
-  refreshSelections();
+  if(opChoice === "add") setOp("both")
+  refreshSelections()
 }
 
 function clearSubtraction(){
-  manualSub.clear();
-  refreshSelections();
+  manualSub.clear()
+  refreshSelections()
 }
 
 function clearAll(){
-  manualAdd.clear();
-  manualSub.clear();
-  activeLevels.clear();
+  manualAdd.clear()
+  manualSub.clear()
+  activeLevels.clear()
 
   [
     "lvl11","lvl12","lvl13",
@@ -1099,179 +1117,195 @@ function clearAll(){
     "lvl71","lvl72","lvl73","lvl74",
     "lvl81","lvl82","lvl83"
   ].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) el.checked = false;
-  });
+    const el = document.getElementById(id)
+    if(el) el.checked = false
+  })
 
-  setOp("both");
-  refreshSelections();
+  setOp("both")
+  refreshSelections()
 }
 
 function getPool(){
-  const { levelAdd, levelSub } = getLevelSets();
-  const unionAdd = new Set([...manualAdd, ...levelAdd]);
-  const unionSub = new Set([...manualSub, ...levelSub]);
+  const { levelAdd, levelSub } = getLevelSets()
+  const unionAdd = new Set([...manualAdd, ...levelAdd])
+  const unionSub = new Set([...manualSub, ...levelSub])
 
-  const pool = [];
+  const pool = []
 
   if(opChoice === "add" || opChoice === "both"){
     unionAdd.forEach(s=>{
-      const p = parseKey(s);
-      pool.push({ op:"add", a:p.a, b:p.b });
-    });
+      const p = parseKey(s)
+      pool.push({ op:"add", a:p.a, b:p.b })
+    })
   }
 
   if(opChoice === "sub" || opChoice === "both"){
     unionSub.forEach(s=>{
-      const p = parseKey(s);
-      pool.push({ op:"sub", a:p.a, b:p.b });
-    });
+      const p = parseKey(s)
+      pool.push({ op:"sub", a:p.a, b:p.b })
+    })
   }
 
-  return pool;
+  return pool
 }
 
 function pickFrom(pool){
-  return pool[Math.floor(Math.random() * pool.length)];
+  return pool[Math.floor(Math.random() * pool.length)]
 }
 
 function shuffleCopy(arr){
-  const a = arr.slice();
+  const a = arr.slice()
   for(let i=a.length-1;i>0;i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    const tmp = a[i];
-    a[i] = a[j];
-    a[j] = tmp;
+    const j = Math.floor(Math.random() * (i + 1))
+    const tmp = a[i]
+    a[i] = a[j]
+    a[j] = tmp
   }
-  return a;
+  return a
 }
 
 function valAnswer(item){
-  return item.op === "add" ? item.a + item.b : item.a - item.b;
+  return item.op === "add" ? item.a + item.b : item.a - item.b
 }
 
 function blankInline(){
-  return "____";
+  return "____"
 }
 
 function fmtQuestion(item, qType){
-  const a = item.a;
-  const b = item.b;
+  const a = item.a
+  const b = item.b
 
   if(item.op === "add"){
-    const t = a + b;
-    if(qType === "total") return { text: a + " + " + b + " = ", needsLine: true };
-    if(qType === "missAdd1") return { text: blankInline() + " + " + b + " = " + t, needsLine: false };
-    if(qType === "missAdd2") return { text: a + " + " + blankInline() + " = " + t, needsLine: false };
-    return { text: a + " + " + b + " = ", needsLine: true };
+    const t = a + b
+
+    if(eqOrder === "totalFirst"){
+      if(qType === "total") return { text: blankInline() + " = " + a + " + " + b, needsLine: false }
+      if(qType === "missAdd1") return { text: t + " = " + blankInline() + " + " + b, needsLine: false }
+      if(qType === "missAdd2") return { text: t + " = " + a + " + " + blankInline(), needsLine: false }
+      return { text: blankInline() + " = " + a + " + " + b, needsLine: false }
+    }else{
+      if(qType === "total") return { text: a + " + " + b + " = ", needsLine: true }
+      if(qType === "missAdd1") return { text: blankInline() + " + " + b + " = " + t, needsLine: false }
+      if(qType === "missAdd2") return { text: a + " + " + blankInline() + " = " + t, needsLine: false }
+      return { text: a + " + " + b + " = ", needsLine: true }
+    }
   }
 
-  const d = a - b;
-  if(qType === "total") return { text: a + " − " + b + " = ", needsLine: true };
-  if(qType === "missSubtrahend") return { text: a + " − " + blankInline() + " = " + d, needsLine: false };
-  if(qType === "missMinuend") return { text: blankInline() + " − " + b + " = " + d, needsLine: false };
-  return { text: a + " − " + b + " = ", needsLine: true };
+  const d = a - b
+
+  if(eqOrder === "totalFirst"){
+    if(qType === "total") return { text: blankInline() + " = " + a + " − " + b, needsLine: false }
+    if(qType === "missSubtrahend") return { text: d + " = " + a + " − " + blankInline(), needsLine: false }
+    if(qType === "missMinuend") return { text: d + " = " + blankInline() + " − " + b, needsLine: false }
+    return { text: blankInline() + " = " + a + " − " + b, needsLine: false }
+  }else{
+    if(qType === "total") return { text: a + " − " + b + " = ", needsLine: true }
+    if(qType === "missSubtrahend") return { text: a + " − " + blankInline() + " = " + d, needsLine: false }
+    if(qType === "missMinuend") return { text: blankInline() + " − " + b + " = " + d, needsLine: false }
+    return { text: a + " − " + b + " = ", needsLine: true }
+  }
 }
 
 function compatiblePool(pool, qType){
-  if(qType === "missAdd1" || qType === "missAdd2") return pool.filter(x=>x.op === "add");
-  if(qType === "missMinuend" || qType === "missSubtrahend") return pool.filter(x=>x.op === "sub");
-  return pool;
+  if(qType === "missAdd1" || qType === "missAdd2") return pool.filter(x=>x.op === "add")
+  if(qType === "missMinuend" || qType === "missSubtrahend") return pool.filter(x=>x.op === "sub")
+  return pool
 }
 
 function generateQuestions(pool){
-  const out = [];
+  const out = []
 
   if(pattern === "random"){
-    for(let i=0;i<questionsPerPage;i++) out.push(pickFrom(pool));
-    return out;
+    for(let i=0;i<questionsPerPage;i++) out.push(pickFrom(pool))
+    return out
   }
 
   if(pattern === "threeeach"){
-    const poolArray = pool.slice();
+    const poolArray = pool.slice()
     for(let i=0;i<questionsPerPage;i++){
-      out.push(poolArray[i % poolArray.length]);
+      out.push(poolArray[i % poolArray.length])
     }
-    return shuffleCopy(out).slice(0, questionsPerPage);
+    return shuffleCopy(out).slice(0, questionsPerPage)
   }
 
   if(pattern === "oncerepeat"){
-    const poolArray = pool.slice();
+    const poolArray = pool.slice()
     for(let i=0;i<questionsPerPage;i++){
-      out.push(poolArray[i % poolArray.length]);
+      out.push(poolArray[i % poolArray.length])
     }
-    return out.slice(0, questionsPerPage);
+    return out.slice(0, questionsPerPage)
   }
 
-  for(let i=0;i<questionsPerPage;i++) out.push(pickFrom(pool));
-  return out;
+  for(let i=0;i<questionsPerPage;i++) out.push(pickFrom(pool))
+  return out
 }
 
 function generate(){
   if(anyMakingLevelSelected()){
-    setOp("add");
+    setOp("add")
     if(mode === "practice"){
-      qTypeEl.value = "missAdd2";
-      updateHint();
+      qTypeEl.value = "missAdd2"
+      updateHint()
     }
   }
 
   if(anyMoreThanTenSelected()){
-    setOp("add");
+    setOp("add")
   }
 
-  let pool = getPool();
+  let pool = getPool()
 
   if(pool.length === 0){
-    const anyManual = manualAdd.size > 0 || manualSub.size > 0;
+    const anyManual = manualAdd.size > 0 || manualSub.size > 0
     if(anyManual){
-      setOp("both");
-      pool = getPool();
+      setOp("both")
+      pool = getPool()
     }
   }
 
   if(pool.length === 0){
-    alert("Select at least one fact.");
-    return;
+    alert("Select at least one fact.")
+    return
   }
 
   if(mode === "practice"){
-    const qt = qTypeEl.value;
-    const compat = compatiblePool(pool, qt);
+    const qt = qTypeEl.value
+    const compat = compatiblePool(pool, qt)
     if(compat.length === 0){
-      alert("That practice sheet format does not match your current operation choice.");
-      return;
+      alert("That practice sheet format does not match your current operation choice.")
+      return
     }
-    generateWorksheets(compat, qt);
-    return;
+    generateWorksheets(compat, qt)
+    return
   }
 
-  generateFlashcards(pool);
+  generateFlashcards(pool)
 }
 
 function generateWorksheets(pool, qType){
-  let pagesHtml = "";
-  const levelsLine = escapeHtml(selectedLevelsLine());
-  const rowsPerCol = Math.floor(questionsPerPage / 3);
-  const pageQuestions = () => generateQuestions(pool);
+  let pagesHtml = ""
+  const levelsLine = escapeHtml(selectedLevelsLine())
+  const rowsPerCol = Math.floor(questionsPerPage / 3)
+  const pageQuestions = () => generateQuestions(pool)
 
   for(let p=0;p<pageCount;p++){
-    const qs = pageQuestions();
-    let cols = "";
+    const qs = pageQuestions()
+    let cols = ""
 
     for(let c=0;c<3;c++){
-      let col = "";
+      let col = ""
       for(let r=0;r<rowsPerCol;r++){
-        const idx = c * rowsPerCol + r;
-        const q = qs[idx % qs.length];
-        const qObj = fmtQuestion(q, qType);
-        const line = qObj.needsLine ? "<span class='ans'></span>" : "";
-        col += "<div class='q'>" + escapeHtml(qObj.text) + line + "</div>";
+        const idx = c * rowsPerCol + r
+        const q = qs[idx % qs.length]
+        const qObj = fmtQuestion(q, qType)
+        const line = qObj.needsLine ? "<span class='ans'></span>" : ""
+        col += "<div class='q'>" + escapeHtml(qObj.text) + line + "</div>"
       }
-      cols += "<div class='col'>" + col + "</div>";
+      cols += "<div class='col'>" + col + "</div>"
     }
 
-    const title = "Symbolic Practice";
+    const title = "Symbolic Practice"
 
     pagesHtml += `
   <div class="printPage">
@@ -1291,47 +1325,47 @@ function generateWorksheets(pool, qType){
       </div>
     </div>
   </div>
-`;
+`
   }
 
-  openPrintWindow(pagesHtml);
+  openPrintWindow(pagesHtml)
 }
 
 function generateFlashcards(pool){
   function makeSetOfTen(){
-    const ten = [];
-    for(let i=0;i<10;i++) ten.push(pickFrom(pool));
-    return ten;
+    const ten = []
+    for(let i=0;i<10;i++) ten.push(pickFrom(pool))
+    return ten
   }
 
   function chunkIntoRows(cards){
-    const rows = [];
-    for(let r=0;r<5;r++) rows.push([cards[r*2], cards[r*2+1]]);
-    return rows;
+    const rows = []
+    for(let r=0;r<5;r++) rows.push([cards[r*2], cards[r*2+1]])
+    return rows
   }
 
   function fmtFront(item){
-    return item.op === "add" ? item.a + " + " + item.b : item.a + " − " + item.b;
+    return item.op === "add" ? item.a + " + " + item.b : item.a + " − " + item.b
   }
 
-  let pagesHtml = "";
+  let pagesHtml = ""
 
   for(let p=0;p<pageCount;p++){
-    const cards = makeSetOfTen();
-    const rows = chunkIntoRows(cards);
+    const cards = makeSetOfTen()
+    const rows = chunkIntoRows(cards)
 
-    let fronts = "";
+    let fronts = ""
     for(const row of rows){
-      fronts += "<div class='card'>" + escapeHtml(fmtFront(row[0])) + "</div>";
-      fronts += "<div class='card'>" + escapeHtml(fmtFront(row[1])) + "</div>";
+      fronts += "<div class='card'>" + escapeHtml(fmtFront(row[0])) + "</div>"
+      fronts += "<div class='card'>" + escapeHtml(fmtFront(row[1])) + "</div>"
     }
 
-    let backs = "";
+    let backs = ""
     for(const row of rows){
-      const leftAns = valAnswer(row[0]);
-      const rightAns = valAnswer(row[1]);
-      backs += "<div class='card'>" + escapeHtml(String(rightAns)) + "</div>";
-      backs += "<div class='card'>" + escapeHtml(String(leftAns)) + "</div>";
+      const leftAns = valAnswer(row[0])
+      const rightAns = valAnswer(row[1])
+      backs += "<div class='card'>" + escapeHtml(String(rightAns)) + "</div>"
+      backs += "<div class='card'>" + escapeHtml(String(leftAns)) + "</div>"
     }
 
     pagesHtml += `
@@ -1345,17 +1379,17 @@ function generateFlashcards(pool){
           <div class="cardsGrid">${backs}</div>
         </div>
       </div>
-    `;
+    `
   }
 
-  openPrintWindow(pagesHtml);
+  openPrintWindow(pagesHtml)
 }
 
 function openPrintWindow(pagesHtml){
-  const win = window.open("print.html", "_blank");
+  const win = window.open("", "_blank")
   if(!win || !win.document){
-    alert("Your browser blocked the new window. Allow popups for this page, then try again.");
-    return;
+    alert("Your browser blocked the new window. Allow popups for this page, then try again.")
+    return
   }
 
   const printStyles = `
@@ -1507,9 +1541,9 @@ function openPrintWindow(pagesHtml){
         justify-content:center;
       }
     }
-  `;
+  `
 
-  win.document.open();
+  win.document.open()
   win.document.write(`
 <!doctype html>
 <html lang="en">
@@ -1529,14 +1563,14 @@ function openPrintWindow(pagesHtml){
   </div>
   ${pagesHtml}
 </body>
-</html>`);
-  win.document.close();
+</html>`)
+  win.document.close()
 }
 
-buildAdditionTable();
-buildSubtractionTable();
-updateHint();
-refreshSelections();
+buildAdditionTable()
+buildSubtractionTable()
+updateHint()
+refreshSelections()
 </script>
 
 </body>
