@@ -1222,18 +1222,28 @@ function generateQuestions(pool){
   }
 
   if(pattern === "threeeach"){
-    const poolArray = pool.slice()
-    for(let i=0;i<questionsPerPage;i++){
-      out.push(poolArray[i % poolArray.length])
+    const poolArray = shuffleCopy(pool)
+
+    for(let i=0;i<poolArray.length;i++){
+      out.push(poolArray[i])
+      out.push(poolArray[i])
+      out.push(poolArray[i])
+      if(out.length >= questionsPerPage) break
     }
-    return shuffleCopy(out).slice(0, questionsPerPage)
+
+    return out.slice(0, questionsPerPage)
   }
 
   if(pattern === "oncerepeat"){
-    const poolArray = pool.slice()
-    for(let i=0;i<questionsPerPage;i++){
-      out.push(poolArray[i % poolArray.length])
+    const poolArray = shuffleCopy(pool)
+
+    while(out.length < questionsPerPage){
+      for(let i=0;i<poolArray.length;i++){
+        out.push(poolArray[i])
+        if(out.length >= questionsPerPage) break
+      }
     }
+
     return out.slice(0, questionsPerPage)
   }
 
@@ -1422,7 +1432,7 @@ function openPrintWindow(pagesHtml){
     .printPage{
       page-break-after: always;
       min-height: calc(11in - 60px);
-      padding-top: 140px;
+      padding-top: 110px;
       display:flex;
       align-items:flex-start;
       justify-content:center;
@@ -1444,7 +1454,7 @@ function openPrintWindow(pagesHtml){
       display:flex;
       align-items:flex-start;
       justify-content:center;
-      padding-top: 40px;
+      padding-top: 8px;
       box-sizing:border-box;
     }
 
@@ -1532,14 +1542,14 @@ function openPrintWindow(pagesHtml){
       line-height:1;
     }
 
-    @media print{
-      .noPrint{display:none;}
-      .printPage{
+      @media print{
+       .noPrint{display:none;}
+       .printPage{
         height:auto;
-        min-height: calc(11in - 60px);
-        align-items:center;
-        justify-content:center;
-      }
+              min-height: calc(11in - 60px);
+              align-items:flex-start;
+       justify-content:flex-start;
+       }
     }
   `
 
